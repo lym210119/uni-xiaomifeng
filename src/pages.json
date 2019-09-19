@@ -1,16 +1,38 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
-		}
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	}
+  "pages": [
+    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/index/index",
+      "style": {
+				"navigationBarTitleText": "小蜜蜂助贷平台",
+				"backgroundColor": "#f5f5f5",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/index/detail",
+      "style": {
+        "navigationBarTitleText": "小蜜蜂助贷平台"
+      }
+    },
+    {
+      "path": "pages/index/baodan",
+      "style": {
+        "navigationBarTitleText": "报单"
+      }
+    },
+    {
+      "path": "pages/index/result",
+      "style": {
+				"navigationBarTitleText": "报单结果",
+				"backgroundColor": "#ffffff"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "小蜜蜂助贷平台",
+    "navigationBarBackgroundColor": "#d99d40",
+    "backgroundColor": "#f5f5f5"
+  }
 }
