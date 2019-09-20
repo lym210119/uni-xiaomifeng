@@ -1,8 +1,5 @@
 <script>
 	export default {
-		globalData: {
-			imgBaseUrl: 'http://192.168.10.208:8088'
-		},
 		onLaunch: function() {
 			console.log('App Launch')
 		},

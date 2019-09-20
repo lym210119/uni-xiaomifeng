@@ -7,6 +7,7 @@ import minRequest from './utils/api'
 Vue.config.productionTip = false
 
 App.mpType = 'app'
+// 打包后改
 Vue.prototype.imgBaseUrl = 'http://192.168.10.208:8088'
 
 Vue.use(MinRequest)

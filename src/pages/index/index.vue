@@ -40,8 +40,9 @@ import productItem from '../../components/productItem'
 		},
 		onLoad (opts) {
 			// _self = this
+
 			this.getProductList()
-			console.log(this)
+			
         // setTimeout(function () {
         //     console.log('start pulldown');
         // }, 1000);
@@ -92,7 +93,12 @@ import productItem from '../../components/productItem'
 				// this.res = res
 					console.log(res)
 					if (res.code === '100' && res.res.length) {
-						this.productList = res.res
+						var data = res.res.map(element => {
+							element.iconFile =  this.imgBaseUrl + '/upload/xmf/icon/' + element.iconFile
+							return element
+						})
+						this.productList = data
+						console.log(this.productList)
 					} else {
 						this.loadingText = res.msg
 					}

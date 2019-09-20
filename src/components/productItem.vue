@@ -1,9 +1,8 @@
 <template>
     <view class="product-item">
-      <image
-        :src="imgBaseUrl + '/upload/xmf/icon/' + item.iconFile"
-        style="width: 60px; height:60px;"
-      />
+      <view class="product-img">
+        <image :src="item.iconFile"/>
+      </view>
       <view class="product-info">
         <text class="product-name">{{item.name}}</text>
         <view class="product-desc">
@@ -29,7 +28,7 @@
 	export default {
     props: {
       item: Object
-    }
+    },
 	}
 </script>
 
@@ -59,6 +58,14 @@
   color: #333333;
   font-size: 34upx;
   font-weight: 400;
+}
+.product-img {
+  width: 120upx;
+  height: 120upx;
+}
+.product-img image {
+  width: 100%;
+  height: 100%;
 }
 
 .product-desc {

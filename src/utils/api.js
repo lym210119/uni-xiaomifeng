@@ -16,7 +16,7 @@ minRequest.interceptors.response(response => {
 minRequest.setConfig(config => {
   if (uni.getSystemInfoSync().platform === 'devtools') {
     console.log('运行在开发工具上')
-    config.baseURL = 'http://192.168.10.34/erp'
+    config.baseURL = 'http://192.168.10.208:8088'
   } else {
     console.log('运行在手机中')
   }
@@ -27,28 +27,28 @@ export default {
   // 这里统一管理api请求
   apis: {
     getProductList(data) {
-      return minRequest.post('/Api/searchProducts', data)
+      return minRequest.post('/erp/Api/searchProducts', data)
     },
     getProductDetail(data) {
-      return minRequest.post('/Api/getOneProduct', data)
+      return minRequest.post('/erp/Api/getOneProduct', data)
     },
     getCityList(data) {
-      return minRequest.post('/Api/getCities', data)
+      return minRequest.post('/erp/Api/getCities', data)
     },
     getCaptcha(data) {
-      return minRequest.post('/Api/sendXmfSms', data)
+      return minRequest.post('/erp/Api/sendXmfSms', data)
     },
     verifySms(data) {
-      return minRequest.post('/Api/verifySms', data)
+      return minRequest.post('/erp/Api/verifySms', data)
     },
     submitDeclaration(data) {
-      return minRequest.post('/Api/submitDeclaration', data)
+      return minRequest.post('/erp/Api/submitDeclaration', data)
     },
     uploadHousePic(data) {
-      return minRequest.post('/Api/uploadHousePic', data)
+      return minRequest.post('/erp/Api/uploadHousePic', data)
     },
     submitDeclaration(data) {
-      return minRequest.post('/Api/submitDeclaration', data)
+      return minRequest.post('/erp/Api/submitDeclaration', data)
     }
   }
 }

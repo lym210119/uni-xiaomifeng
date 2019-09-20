@@ -2,11 +2,9 @@
   <view class="detail">
     <view class="detail-header">
       <view class="detail-header-title">
-        <image
-          class="detail-header-image"
-          :src="imgBaseUrl + '/upload/xmf/icon/' + obj.iconFile"
-          style="width: 60px; height:60px;"
-        />
+        <view class="detail-header-image">
+          <image :src="obj.iconFile"/>
+        </view>
         <view class="detail-header-info">
           <text class="detail-header-name">{{ obj.name }}</text>
           <view class="detail-header-text">
@@ -88,7 +86,12 @@ export default {
     this.$minApi.getProductDetail(opts).then(res => {
       console.log(res)
       if (res.code === '100') {
-        this.obj = res.res
+        console.log(res.res)
+        console.log(1)
+        var data = res.res
+        data.iconFile = this.imgBaseUrl + '/upload/xmf/icon/' + data.iconFile
+        this.obj = data
+        console.log(this.obj)
       }
     }).catch(err => {
       console.log(err)
@@ -133,10 +136,14 @@ export default {
 }
 .detail-header-image {
   display: block;
-  width: 60upx;
-  height: 60upx;
+  width: 120upx;
+  height: 120upx;
   margin: 0 30upx 0 10upx;
   border-radius: 10upx;
+}
+.detail-header-image image {
+  width: 100%;
+  height: 100%;
 }
 .detail-header-info {
   flex: 1;

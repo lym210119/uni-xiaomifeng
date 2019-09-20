@@ -154,7 +154,6 @@ export default {
       disabled: false,
       image1: '',
       image2: '',
-      host: 'http://192.168.10.208:8088/upload/xmf/house/',
       housePic: [],
     }
   },
@@ -249,9 +248,10 @@ export default {
             // }).catch(err => {
             //   console.log(err)
             // })
+            
             const tempFilePaths = chooseImageRes.tempFilePaths;
             const uploadTask = uni.uploadFile({
-                url: '/Api/uploadHousePic', //仅为示例，非真实的接口地址
+                url: '/erp/Api/uploadHousePic',
                 filePath: tempFilePaths[0],
                 name: 'file',
                 formData: {
@@ -266,7 +266,7 @@ export default {
                     } else {
                       console.log(result.url)
                       console.log('flag: ' + flag)
-                      var url = this.host + result.url
+                      var url = this.imgBaseUrl + '/upload/xmf/house/' + result.url
                       if (flag === 1) {
                         this.image1 = url
                         this.housePic[0] = result.url
