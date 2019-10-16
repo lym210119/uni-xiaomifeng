@@ -1,59 +1,86 @@
 <template>
-  <view class="result">
-    <view v-if="result">
+  <view>
+    <view class="result">
       <image class="result-img" src="../../static/apply-success.png"></image>
-      <view class="result-text">恭喜您，申请成功啦！</view>
+      <view class="result-text">客户报备成功！</view>
+      <view class="userinfo">
+        <view class="name"> 姓名：<text>李**</text> </view>
+        <view class="idcard">
+          身份证号码：<text>420***********361X</text>
+        </view>
+        <view class="datetime"> 保护期至：<text>2019-10-17 19:40</text> </view>
+      </view>
     </view>
-    <view v-else>
-      <image class="result-img" src="../../static/apply-fail.png"></image>
-      <view class="result-text">申请失败！</view>
+    <view class="more" @click="toMoreProduct()">
+      <text class="moreBtn baobei">继续报备其他客户</text>
+      <text class="moreBtn mybaobei">查看我报备的客户</text>
     </view>
-    <view class="more" @click="toMoreProduct()">查看更多产品</view>
   </view>
 </template>
 
 <script>
 export default {
   onLoad(opts) {
-    console.log(opts)
-    this.result = + opts.r
+    console.log(opts);
+    this.result = +opts.r;
   },
   data() {
     return {
       result: false
-    }
+    };
   },
   methods: {
     toMoreProduct() {
       uni.redirectTo({
-        url: 'index'
-      })
+        url: "index"
+      });
     }
   }
-}
+};
 </script>
 
 <style>
-  .result {
-    height: 100%;
-    padding: 70upx 150upx 0;
-  }
-  .result-img {
-    width: 438upx;
-    height: 258upx
-  }
-  .result-text {
-    line-height: 146upx;
-    text-align: center;
-    font-size: 32upx;
-  }
-  .more {
-    height: 78upx;
-    line-height: 78upx;
-    text-align: center;
-    border-radius: 50upx;
-    background-color: #d99d40;
-    font-size: 32upx;
-    color: #ffffff;
-  }
+.result {
+  height: 100%;
+  padding: 70upx 150upx 0;
+}
+.result-img {
+  width: 438upx;
+  height: 258upx;
+}
+.result-text {
+  margin-top: 30upx;
+  text-align: center;
+  font-size: 36upx;
+}
+.userinfo {
+  font-size: 28upx;
+  color: #949494;
+}
+.userinfo view {
+  line-height: 68upx;
+}
+.userinfo view text {
+  color: #000000;
+}
+.more {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 50upx;
+}
+.moreBtn {
+  padding: 20upx 30upx;
+  text-align: center;
+  border-radius: 50upx;
+  box-shadow: 2upx 2upx 10upx 0 rgba(0, 0, 0, 0.3);
+  background-color: #d99d40;
+  font-size: 32upx;
+  color: #ffffff;
+}
+.mybaobei {
+  background-color: #ffffff;
+  color: #333;
+}
 </style>

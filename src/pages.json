@@ -4,7 +4,7 @@
     {
       "path": "pages/index/index",
       "style": {
-				"navigationBarTitleText": "小蜜蜂助贷平台",
+				"navigationBarTitleText": "小蜜蜂综合助贷平台",
 				"backgroundColor": "#f5f5f5",
         "enablePullDownRefresh": true
       }
@@ -12,20 +12,64 @@
     {
       "path": "pages/index/detail",
       "style": {
-        "navigationBarTitleText": "小蜜蜂助贷平台"
       }
     },
     {
-      "path": "pages/index/baodan",
+      "path": "pages/index/baobei",
       "style": {
-        "navigationBarTitleText": "报单"
+        "navigationBarTitleText": "报备客户"
       }
     },
     {
       "path": "pages/index/result",
       "style": {
-				"navigationBarTitleText": "报单结果",
+				"navigationBarTitleText": "报备客户",
 				"backgroundColor": "#ffffff"
+      }
+    },
+    {
+      "path": "pages/index/login",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "backgroundColor": "#ffffff",
+        "navigationBarBackgroundColor": "transparent",
+				"app-plus": {
+          "titleNView": {
+            "type": "float"
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/index/register",
+      "style": {
+        "navigationBarTitleText": "注册",
+        "backgroundColor": "#ffffff",
+        "navigationBarBackgroundColor": "transparent",
+				"app-plus": {
+          "titleNView": {
+            "type": "float"
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/index/mine",
+      "style": {
+        "navigationBarTitleText": "个人中心",
+        "backgroundColor": "#ffffff",
+        "navigationBarBackgroundColor": "transparent",
+				"app-plus": {
+          "titleNView": {
+            "type": "float"
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/index/userAuth",
+      "style": {
+        "navigationBarTitleText": "认证中心"
       }
     }
   ],

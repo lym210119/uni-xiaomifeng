@@ -26,29 +26,42 @@ minRequest.setConfig(config => {
 export default {
   // 这里统一管理api请求
   apis: {
+    updatePassword(data) {
+      return minRequest.post('/erp/Api/updatePassword', data)
+    },
+    // 登录验证
+
+    // 登录
+    brokerLogin(data) {
+      return minRequest.post('/erp/Api/brokerLogin', data)
+    },
+    // 注册
+    brokerRegister(data) {
+      return minRequest.post('/erp/Api/brokerRegister', data)
+    },
     getProductList(data) {
       return minRequest.post('/erp/Api/searchProducts', data)
     },
     getProductDetail(data) {
       return minRequest.post('/erp/Api/getOneProduct', data)
     },
-    getCityList(data) {
-      return minRequest.post('/erp/Api/getCities', data)
-    },
+    // getCityList(data) {
+    //   return minRequest.post('/erp/Api/getCities', data)
+    // },
     getCaptcha(data) {
       return minRequest.post('/erp/Api/sendXmfSms', data)
     },
     verifySms(data) {
       return minRequest.post('/erp/Api/verifySms', data)
     },
-    submitDeclaration(data) {
-      return minRequest.post('/erp/Api/submitDeclaration', data)
-    },
-    uploadHousePic(data) {
-      return minRequest.post('/erp/Api/uploadHousePic', data)
-    },
-    submitDeclaration(data) {
-      return minRequest.post('/erp/Api/submitDeclaration', data)
-    }
+    // submitBaobei(data) {
+    //   return minRequest.post('/erp/Api/submitBaobei', data)
+    // },
+    // uploadHousePic(data) {
+    //   return minRequest.post('/erp/Api/uploadHousePic', data)
+    // },
+    // submitDeclaration(data) {
+    //   return minRequest.post('/erp/Api/submitDeclaration', data)
+    // },
   }
 }

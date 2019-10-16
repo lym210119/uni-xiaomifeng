@@ -1,5 +1,5 @@
 <template>
-  <view class="baodan">
+  <view class="baobei">
     <form @submit="formSubmit" @reset="formReset">
       <view class="item">
         <view class="item-label">
@@ -379,7 +379,7 @@ export default {
 </script>
 
 <style>
-.baodan {
+.baobei {
   position: relative;
   padding-bottom: 100upx;
   background-color: #ffffff;
@@ -445,11 +445,11 @@ export default {
 }
 .item-label {
   flex: 1;
-  font-size: 30upx;
+  font-size: 28upx;
 }
 .item-input {
   flex: 2;
-  font-size: 30upx;
+  font-size: 28upx;
 }
 .item-input.captcha,
 .item-input.input-city {

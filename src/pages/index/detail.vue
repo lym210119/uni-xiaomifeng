@@ -3,7 +3,7 @@
     <view class="detail-header">
       <view class="detail-header-title">
         <view class="detail-header-image">
-          <image :src="obj.iconFile"/>
+          <image :src="obj.iconFile" />
         </view>
         <view class="detail-header-info">
           <text class="detail-header-name">{{ obj.name }}</text>
@@ -70,41 +70,53 @@
       </view>
     </view>
 
-    <view class="baodan-btn" @click="toBaodan(obj.id)">报单</view>
+    <view class="baobei-btn" @click="tobaobei(obj.id)">报备</view>
+    <fabButton :is-index="false"></fabButton>
   </view>
 </template>
 
 <script>
+import fabButton from "../../components/fabButton";
 export default {
+  components: {
+    fabButton
+  },
   data() {
     return {
       obj: {}
-    }
+    };
   },
   onLoad(opts) {
-    console.log(opts)
-    this.$minApi.getProductDetail(opts).then(res => {
-      console.log(res)
-      if (res.code === '100') {
-        console.log(res.res)
-        console.log(1)
-        var data = res.res
-        data.iconFile = this.imgBaseUrl + '/upload/xmf/icon/' + data.iconFile
-        this.obj = data
-        console.log(this.obj)
-      }
-    }).catch(err => {
-      console.log(err)
-    })
+    console.log(opts);
+
+    this.$minApi
+      .getProductDetail(opts)
+      .then(res => {
+        console.log(res);
+        if (res.code === "100") {
+          console.log(res.res);
+          console.log(1);
+          var data = res.res;
+          data.iconFile = this.imgBaseUrl + "/upload/xmf/icon/" + data.iconFile;
+          this.obj = data;
+          console.log(this.obj);
+          uni.setNavigationBarTitle({
+            title: data.name
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {
-    toBaodan(id) {
-      	uni.navigateTo({
-					url: 'baodan?id=' + id
-				})
+    tobaobei(id) {
+      uni.navigateTo({
+        url: "baobei?id=" + id
+      });
     }
   }
-}
+};
 </script>
 
 <style>
@@ -112,7 +124,7 @@ export default {
   position: relative;
   padding-bottom: 100upx;
 }
-.baodan-btn {
+.baobei-btn {
   position: fixed;
   left: 0;
   bottom: 0;
@@ -213,7 +225,7 @@ export default {
 }
 .desc-item-title {
   padding: 15upx 20upx;
-  font-size: 30upx;
+  font-size: 28upx;
 }
 .desc-item-text {
   margin-left: 80upx;
