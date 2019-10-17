@@ -110,9 +110,11 @@ export default {
                 }
                 uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
                 this.login(res.data);
-                uni.navigateTo({
-                  url: "mine"
-                });
+            setTimeout(() => {
+              uni.navigateTo({
+                url: "mine"
+              });
+            }, 2000);
               })
               .catch(err => {
                 console.log(err);
@@ -131,9 +133,11 @@ export default {
             }
             uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
             this.login(res.data);
-            uni.navigateTo({
-              url: "mine"
-            });
+            setTimeout(() => {
+              uni.navigateTo({
+                url: "mine"
+              });
+            }, 2000);
           })
           .catch(err => {
             console.log(err);
@@ -195,7 +199,7 @@ export default {
       }
       let verifySms = false;
       let a = await this.$minApi
-        .verifySms({ phoneNum: this.formdata.phoneNum, captcha: this.captcha })
+        .verifySms({ phoneNum: this.phoneNum, captcha: this.captcha })
         .then(res => {
           console.log(res);
           if (res.code !== "100") {
@@ -327,6 +331,7 @@ export default {
 .valid-code-btn {
   width: 140upx;
   padding: 0 30upx;
+  text-align: center;
   /* border-left: 1px solid #949494; */
   font-size: 28upx;
   color: #df631f;

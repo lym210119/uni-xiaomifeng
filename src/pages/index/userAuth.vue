@@ -129,6 +129,10 @@ export default {
         });
         return false;
       }
+      if (!data.phoneNum.trim()) {
+        uni.showToast({ title: "请输入手机号", icon: "none", duration: 2000 });
+        return false;
+      }
       if (!/^1[3456789]\d{9}$/.test(data.phoneNum)) {
         uni.showToast({
           title: "您输入的手机号无效，请重新输入",

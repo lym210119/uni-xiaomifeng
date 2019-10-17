@@ -37,7 +37,7 @@ export default {
         },
         {
           title: "查看贷款产品",
-          url: "product",
+          url: "index",
           icon: "../../static/mine-product.png"
         },
         {
@@ -46,7 +46,7 @@ export default {
           icon: "../../static/mine-mybaobei.png"
         },
         {
-          title: "我的业务保单",
+          title: "我的业务报单",
           url: "myWorkOrder",
           icon: "../../static/mine-myWorkOrder.png"
         },
@@ -69,8 +69,8 @@ export default {
       uni.navigateTo({
         url: item.url
       });
-      if (item.url === "index") {
-        // 退出等率
+      if (item.title === "退出登录") {
+        // 退出
         this.logout();
       }
     }
