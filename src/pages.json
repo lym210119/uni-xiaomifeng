@@ -67,9 +67,15 @@
       }
     },
     {
-      "path": "pages/index/userAuth",
+      "path": "pages/index/unAuth",
       "style": {
         "navigationBarTitleText": "认证中心"
+      }
+    },
+    {
+      "path": "pages/index/authSubmitSuccess",
+      "style": {
+        "navigationBarTitleText": "经纪人认证"
       }
     }
   ],

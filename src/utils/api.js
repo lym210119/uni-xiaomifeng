@@ -26,6 +26,10 @@ minRequest.setConfig(config => {
 export default {
   // 这里统一管理api请求
   apis: {
+    submitTrustInfo(data) {
+      return minRequest.post('/erp/Api/submitTrustInfo', data)
+    },
+    // 修改密码
     updatePassword(data) {
       return minRequest.post('/erp/Api/updatePassword', data)
     },

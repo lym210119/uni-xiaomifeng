@@ -5,7 +5,7 @@
         <image class="" src="../../static/product-image.png"></image>
       </view>
       <view class="user-info">
-        <view class="username">姓名</view>
+        <view class="username">未认证</view>
         <view class="user-phone">186****6180</view>
       </view>
     </view>
@@ -32,7 +32,7 @@ export default {
       list: [
         {
           title: "经纪人认证",
-          url: "userAuth",
+          url: "unAuth",
           icon: "../../static/mine-user-auth.png"
         },
         {
@@ -66,13 +66,13 @@ export default {
   methods: {
     ...mapMutations(["logout"]),
     handleLsitClick(item) {
-      uni.navigateTo({
-        url: item.url
-      });
       if (item.title === "退出登录") {
         // 退出
         this.logout();
       }
+      uni.navigateTo({
+        url: item.url
+      });
     }
   }
 };

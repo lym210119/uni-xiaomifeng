@@ -91,33 +91,33 @@ export default {
       // if (type === "1") {
       let valid = await this.validAllData();
       if (valid) {
-        // let verifySms = await this.verifySms();
+        let verifySms = await this.verifySms();
         // console.log(verifySms);
         console.log(123);
-        // if (verifySms) {
-        let apiType = type === "1" ? "brokerRegister" : "updatePassword";
-        this.$minApi[apiType](this.formdata)
-          .then(res => {
-            console.log(res);
-            if (res.code !== 1) {
-              uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
-              return;
-            }
-            uni.showToast({
-              title: res.msg,
-              icon: "none",
-              duration: 2000
-            });
-            setTimeout(() => {
-              uni.navigateTo({
-                url: "login"
+        if (verifySms) {
+          let apiType = type === "1" ? "brokerRegister" : "updatePassword";
+          this.$minApi[apiType](this.formdata)
+            .then(res => {
+              console.log(res);
+              if (res.code !== 1) {
+                uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
+                return;
+              }
+              uni.showToast({
+                title: res.msg,
+                icon: "none",
+                duration: 2000
               });
-            }, 2000);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        // }
+              setTimeout(() => {
+                uni.navigateTo({
+                  url: "login"
+                });
+              }, 2000);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
       }
       // }
     },
