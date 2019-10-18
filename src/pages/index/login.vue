@@ -110,11 +110,11 @@ export default {
                 }
                 uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
                 this.login(res.data);
-            setTimeout(() => {
-              uni.navigateTo({
-                url: "mine"
-              });
-            }, 2000);
+                setTimeout(() => {
+                  uni.navigateTo({
+                    url: "index"
+                  });
+                }, 2000);
               })
               .catch(err => {
                 console.log(err);
@@ -135,7 +135,7 @@ export default {
             this.login(res.data);
             setTimeout(() => {
               uni.navigateTo({
-                url: "mine"
+                url: "index"
               });
             }, 2000);
           })

@@ -128,6 +128,25 @@ export default {
   },
   onLoad(opts) {
     console.log(opts);
+    if (opts.data) {
+      var data = JSON.parse(opts.data);
+      this.formData.name = data.name;
+      this.formData.phoneNum = data.phone;
+      this.formData.company = data.companyName;
+      if (data.businessCardUrl) {
+        this.uploadList[0].image.push(
+          this.imgBaseUrl + data.businessCardUrl
+        );
+      }
+      if (data.workCardUrl) {
+        this.uploadList[1].image.push(this.imgBaseUrl + data.workCardUrl);
+      }
+      if (data.companyWallUrl) {
+        this.uploadList[2].image.push(
+          this.imgBaseUrl + data.companyWallUrl
+        );
+      }
+    }
   },
   methods: {
     // 提交认证表单
@@ -309,7 +328,7 @@ export default {
             filePath: tempFilePaths[0],
             name: "file",
             formData: {
-              type: this.uploadList[i].name
+              "type": this.uploadList[i].name
             },
             success: uploadFileRes => {
               console.log(uploadFileRes);
@@ -430,7 +449,7 @@ export default {
 
 .item-upload .item-label {
   height: 80upx;
-  line-height: 100upx;
+  line-height: 80upx;
 }
 
 .item-image-list {

@@ -4,28 +4,28 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-	state: {
-		uerInfo: {},
-		hasLogin: false
-	},
-	mutations: {
-		login(state, provider) {
-			state.hasLogin = true
-			state.uerInfo.sessionId = provider.sessionId
-			state.uerInfo.phoneNum = provider.phoneNum
-			uni.setStorage({
-				key: 'uerInfo',
-				data: provider
-			})
-		},
-		logout(state) {
-			state.hasLogin = false
-			state.uerInfo = {}
-			uni.removeStorage({
-				key: 'uerInfo'
-			});
-		}
-	}
+  state: {
+    userInfo: {},
+    hasLogin: false
+  },
+  mutations: {
+    login(state, provider) {
+      state.hasLogin = true
+      state.userInfo.sessionId = provider.sessionId
+      state.userInfo.phoneNum = provider.phoneNum
+      uni.setStorage({
+        key: 'userInfo',
+        data: provider
+      })
+    },
+    logout(state) {
+      state.hasLogin = false
+      state.userInfo = {}
+      uni.removeStorage({
+        key: 'userInfo'
+      })
+    }
+  }
 })
 
 export default store

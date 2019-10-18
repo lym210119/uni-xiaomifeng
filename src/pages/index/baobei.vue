@@ -102,25 +102,36 @@
 
 <script>
 import fabButton from "../../components/fabButton";
+import { mapState } from "vuex";
 export default {
   components: {
     fabButton
   },
+  computed: mapState(["userInfo"]),
   data() {
     return {
       productId: "",
-      imageList: []
+      imageList: [],
+      imgArr: []
     };
   },
   onLoad(opts) {
-    this.productId = opts.id;
+    this.productId = opts.id || "";
     console.log(opts);
   },
   methods: {
     validAllData(data) {
-      if (!data.name.trim()) {
+      // if (!data.name.trim()) {
+      //   uni.showToast({
+      //     title: "请输入客户姓名！",
+      //     icon: "none",
+      //     duration: 2000
+      //   });
+      //   return false;
+      // }
+      if (!data.phoneNum.trim()) {
         uni.showToast({
-          title: "请输入客户姓名！",
+          title: "请输入客户手机号",
           icon: "none",
           duration: 2000
         });
@@ -129,6 +140,14 @@ export default {
       if (!/^1[3456789]\d{9}$/.test(data.phoneNum)) {
         uni.showToast({
           title: "您输入的手机号无效，请重新输入",
+          icon: "none",
+          duration: 2000
+        });
+        return false;
+      }
+      if (!data.phoneNum.trim()) {
+        uni.showToast({
+          title: "请输入身份证号码",
           icon: "none",
           duration: 2000
         });
@@ -171,37 +190,71 @@ export default {
       let valid = await this.validAllData(formdata);
       console.log(valid);
       if (valid) {
-        let imgArr = await this.uploadImage();
-        formdata.imgArr = imgArr;
-        // this.$minApi.submitBaobei(formdata).then(res => {
-        // console.log(res)
-        uni.redirectTo({
-          url: "result"
-        });
-        // }).catch(err => {
-        //   alert(err)
-        // })
+        formdata.imgArr = this.imgArr.join("|");
+        formdata.userPhone = this.userInfo.phoneNum;
+        formdata.productId = this.productId;
+        // this.$minApi
+        //   .submitBaobei(formdata)
+        //   .then(res => {
+        //     console.log(res);
+        //     if (res.code !== 1) {
+        //       uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
+        //       return;
+        //     }
+        //     let name = await this.plusXing(this.formdata.name, 1, 0)
+        //     let IDCard = await this.plusXing(this.formdata.IDCard, 6, 4)
+        //     let params = {
+        //       name: name,
+        //       IDCard: IDCard,
+        //       expirationTime: res.expirationTime
+        //     };
+        //     uni.redirectTo({
+        //       url: "result?params=" + JSON.stringify(params)
+        //     });
+        //   })
+        //   .catch(err => {
+        //     console.log(err);
+        //   });
+        this.$minApi
+          .submitBaobei(formdata)
+          .then(res => {
+            console.log(res);
+            if (res.code !== 1) {
+              uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
+              return;
+            }
+            var name =
+              formdata.name.substr(0, 1) +
+              new Array(formdata.name.length).join("*");
+            var IDCard =
+              formdata.IDCard.substr(0, 6) +
+              new Array(formdata.IDCard.length - 10).join("*") +
+              formdata.IDCard.substr(-4);
+            var expirationTime = res.expirationTime;
+            var params = {
+              name,
+              IDCard,
+              expirationTime
+            };
+            console.log(params);
+            uni.redirectTo({
+              url: "result?params=" + JSON.stringify(params)
+            });
+          })
+          .catch(err => {
+            uni.showModal({ title: "请求失败", content: JSON.stringify(err) });
+          });
       }
     },
-    uploadImage() {
-      var imgUrlArr = [];
-      uni.showLoading({ title: "上传图片中..." });
-      this.imageList.forEach(item => {
-        uni.uploadFile({
-          url: "/erp/api/upload",
-          filePath: item,
-          name: "file",
-          // formData: {
-          //     'user': 'test'
-          // },
-          success: function(uploadFileRes) {
-            console.log(uploadFileRes);
-            uni.hideLoading();
-          }
-        });
-      });
-
-      return imgUrlArr;
+    plusXing(str, frontLen, endLen) {
+      var len = str.length - frontLen - endLen;
+      var xing = "";
+      for (var i = 0; i < len; i++) {
+        xing += "*";
+      }
+      return (
+        str.substring(0, frontLen) + xing + str.substring(str.length - endLen)
+      );
     },
 
     chooseImage: async function() {
@@ -217,54 +270,47 @@ export default {
             });
             return;
           }
-          this.imageList = this.imageList.concat(res.tempFilePaths);
-          // const tempFilePaths = res.tempFilePaths;
-          // const uploadTask = uni.uploadFile({
-          //   url: "/erp/Api/upload",
-          //   filePath: tempFilePaths[0],
-          //   name: "file",
-          //   formData: {
-          //     type: "baobei"
-          //   },
-          //   success: uploadFileRes => {
-          //     var result = JSON.parse(uploadFileRes.data);
-          //     console.log(result);
-          //     if (result.code != "100") {
-          //       console.log(44444444444444);
-          //       uni.showToast({ title: "result.msg", icon: "none", duration: 2000 });
-          //     } else {
-          //       console.log(result.url);
-          //       console.log("flag: " + flag);
-          //       var url = this.imgBaseUrl + "/upload/xmf/house/" + result.url;
-          //       if (flag === 1) {
-          //         this.image1 = url;
-          //         this.housePic[0] = result.url;
-          //       }
-          //       if (flag === 2) {
-          //         this.image2 = url;
-          //         this.housePic[1] = result.url;
-          //       }
-          //       // this.imageList.push(url)
-          //       // this.housePic.push(result.url)
-          //       console.log(this.imageList);
-          //     }
-          //   }
-          // });
-          // uni.showLoading({
-          //   title: "上传中... "
-          // });
-          // uploadTask.onProgressUpdate(res => {
-          //   console.log("上传进度" + res.progress);
-          //   console.log("已经上传的数据长度" + res.totalBytesSent);
-          //   console.log(
-          //     "预期需要上传的数据总长度" + res.totalBytesExpectedToSend
-          //   );
 
-          //   // // 测试条件，取消上传任务。
-          //   if (res.progress === 100) {
-          //     uni.hideLoading();
-          //   }
-          // });
+          uni.showLoading({ title: "上传图片中..." });
+          const tempFilePaths = res.tempFilePaths;
+          const uploadTask = uni.uploadFile({
+            url: "/erp/Api/uploadHousePic",
+            filePath: tempFilePaths[0],
+            name: "file",
+            formData: {
+              type: "baobei"
+            },
+            success: uploadFileRes => {
+              var result = JSON.parse(uploadFileRes.data);
+              console.log(result);
+              if (result.code !== "100") {
+                console.log(44444444444444);
+                uni.showToast({
+                  title: result.msg,
+                  icon: "none",
+                  duration: 2000
+                });
+                return;
+              }
+              this.imageList.push(this.imgBaseUrl + result.url);
+              this.imgArr.push(result.url);
+            }
+          });
+          uni.showLoading({
+            title: "上传中... "
+          });
+          uploadTask.onProgressUpdate(res => {
+            console.log("上传进度" + res.progress);
+            console.log("已经上传的数据长度" + res.totalBytesSent);
+            console.log(
+              "预期需要上传的数据总长度" + res.totalBytesExpectedToSend
+            );
+
+            // // 测试条件，取消上传任务。
+            if (res.progress === 100) {
+              uni.hideLoading();
+            }
+          });
         }
       });
     },

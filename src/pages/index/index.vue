@@ -100,7 +100,7 @@ export default {
         this.page++; //每触底一次 page +1
         var data = res.res.map(element => {
           element.iconFile =
-            this.imgBaseUrl + "/upload/xmf/icon/" + element.iconFile;
+            this.imgBaseUrl + element.iconFile;
           return element;
         });
         this.productList = this.productList.concat(data); //将数据拼接在一起
@@ -119,7 +119,7 @@ export default {
           if (res.code === "100" && res.res.length) {
             var data = res.res.map(element => {
               element.iconFile =
-                this.imgBaseUrl + "/upload/xmf/icon/" + element.iconFile;
+                this.imgBaseUrl + element.iconFile;
               return element;
             });
             this.productList = data;

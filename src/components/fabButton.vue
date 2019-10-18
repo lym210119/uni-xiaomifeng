@@ -29,9 +29,15 @@ export default {
       });
     },
     toBaobei() {
-      uni.navigateTo({
-        url: "baobei"
-      });
+      if (this.hasLogin) {
+        uni.navigateTo({
+          url: "baobei"
+        });
+      } else {
+        uni.navigateTo({
+          url: "login"
+        });
+      }
     },
     toMine() {
       console.log(this.hasLogin);

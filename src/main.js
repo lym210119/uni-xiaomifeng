@@ -12,7 +12,7 @@ App.mpType = 'app'
 if (process.env.NODE_ENV === 'production') {
   Vue.prototype.imgBaseUrl = 'http://39.100.129.13'
 } else {
-  Vue.prototype.imgBaseUrl = 'http://192.168.10.208:8088'
+  Vue.prototype.imgBaseUrl = 'http://192.168.10.208:8099'
 }
 Vue.prototype.$store = store
 

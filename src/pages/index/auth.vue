@@ -1,85 +1,42 @@
 <template>
   <view class="user-auth">
-    <view class="info">
-      <view class="info-title">认证说明：</view>
-      <view class="info-desc">1、认证成为经纪人可以获得业务佣金；</view>
-      <view class="info-desc"
-        >2、输入姓名、手机号码、公司名称，并上传名片、工牌、公司背景墙合影至少一项即可提交认证。</view
-      >
+    <view class="auth-head">
+      <view class="user-info">
+        <view class="user-name">
+          <label>姓名</label>
+          <text>{{ data.name }}</text>
+        </view>
+        <view class="user-phone">
+          <label>手机号码</label>
+          <text>{{ data.phone }}</text>
+        </view>
+        <view class="user-company">
+          <label>公司名称</label>
+          <text>{{ data.companyName }}</text>
+        </view>
+      </view>
+      <view class="auth-status">
+        <image class="auth-icon" :src="active.icon"></image>
+        <view class="auth-text">{{ active.title }}</view>
+      </view>
     </view>
 
-    <view class="item">
-      <view class="item-label">
-        姓名
-      </view>
-      <view class="item-input">
-        <input
-          type="text"
-          v-model="formData.name"
-          placeholder="请输入姓名"
-          maxlength="11"
-        />
-      </view>
-    </view>
-    <view class="item">
-      <view class="item-label">
-        手机号码
-      </view>
-      <view class="item-input">
-        <input
-          type="number"
-          v-model="formData.phoneNum"
-          placeholder="请输入手机号码"
-          maxlength="11"
-        />
-      </view>
-    </view>
-    <view class="item">
-      <view class="item-label">
-        验证码
-      </view>
-      <view class="item-input captcha">
-        <input
-          type="number"
-          v-model="formData.captcha"
-          placeholder="请输入验证码"
-          maxlength="6"
-        />
-        <view class="captcha-btn" @click="getCaptcha">{{ captchaText }}</view>
-      </view>
-    </view>
-    <view class="item">
-      <view class="item-label">
-        公司名称
-      </view>
-      <view class="item-input">
-        <input
-          type="text"
-          v-model="formData.company"
-          placeholder="请输入公司名称"
-        />
-      </view>
-    </view>
     <block v-for="(item, i) in uploadList" :key="i">
-      <view class="item-upload">
+      <view class="item-upload" v-if="item.image[0]">
         <view class="item-label">
           {{ item.title }}
         </view>
         <view class="item-image-list">
           <view class="uni-uploader__files">
-            <view class="uni-uploader__file" v-if="item.image[0]">
+            <view class="uni-uploader__file">
               <image
                 class="uni-uploader__img"
                 :src="item.image[0]"
                 :data-src="item.image[0]"
                 @tap="previewImage"
               ></image>
-              <!-- <input type="hidden" :name="item.name" :value="item.image[0]"> -->
-              <view class="image-clear" @click.stop="removeImage(i)">
-                <icon type="clear" size="26" />
-              </view>
             </view>
-            <view class="uni-uploader__input-box" v-else>
+            <!-- <view class="uni-uploader__input-box" v-else>
               <view class="uni-uploader__input" @tap="chooseImage(i)">
                 <image
                   class="upload-image"
@@ -87,13 +44,21 @@
                 ></image>
                 <text class="upload-text">请上传图片</text>
               </view>
-            </view>
+            </view> -->
           </view>
         </view>
       </view>
     </block>
-    <button class="submit" @click="formSubmit()">
-      提交认证
+    <view class="item-upload" v-if="data.status === 4">
+      <view class="item-label">
+        失败原因
+      </view>
+      <view class="fail-text">
+        {{ data.trustFailReason }}
+      </view>
+    </view>
+    <button class="submit" @click="againAuth()" v-if="data.status !== 2">
+      重新认证
     </button>
     <fabButton></fabButton>
   </view>
@@ -107,226 +72,47 @@ export default {
   },
   data() {
     return {
+      data: {},
+      authStatus: [
+        { status: 2, title: "认证中", icon: "../../static/auth-icon-ing.png" },
+        {
+          status: 3,
+          title: "已认证",
+          icon: "../../static/auth-icon-success.png"
+        },
+        {
+          status: 4,
+          title: "认证失败",
+          icon: "../../static/auth-icon-fail.png"
+        }
+      ],
+      active: "",
       uploadList: [
         { title: "名片", name: "userCards", image: [] },
         { title: "工牌", name: "userWorkCard", image: [] },
         { title: "公司背景墙合影", name: "userGroupPhoto", image: [] }
-      ],
-      captchaText: "获取验证码",
-      time: 60,
-      disabled: false,
-      formData: {
-        name: "",
-        phoneNum: "",
-        captcha: "",
-        company: "",
-        userCards: "",
-        userWorkCard: "",
-        userGroupPhoto: ""
-      }
+      ]
     };
   },
   onLoad(opts) {
-    console.log(opts);
+    console.log(JSON.parse(opts.data));
+    this.data = JSON.parse(opts.data);
+    this.active = this.authStatus.find(
+      item => item.status === this.data.status
+    );
+    if (this.data.businessCardUrl) {
+      this.uploadList[0].image.push(
+        this.imgBaseUrl + this.data.businessCardUrl
+      );
+    }
+    if (this.data.workCardUrl) {
+      this.uploadList[1].image.push(this.imgBaseUrl + this.data.workCardUrl);
+    }
+    if (this.data.companyWallUrl) {
+      this.uploadList[2].image.push(this.imgBaseUrl + this.data.companyWallUrl);
+    }
   },
   methods: {
-    // 提交认证表单
-    async formSubmit() {
-      let valid = await this.validAllData();
-      console.log(valid);
-      if (valid) {
-        let verifySms = await this.verifySms();
-        if (!verifySms) {
-          alert("验证通过");
-          var imgArr = this.uploadList
-            .map(item => item.image.join(""))
-            .filter(item => item !== "");
-          console.log(imgArr);
-          uni.showLoading({ title: "上传图片中..." });
-          imgArr.forEach(item => {
-            uni.uploadFile({
-              url: "/erp/api/uploadHousePic",
-              filePath: item,
-              name: "file",
-              formData: {
-                type: "house"
-              },
-              success: function(uploadFileRes) {
-                console.log(uploadFileRes);
-              }
-            });
-          });
-        }
-      }
-    },
-    // 验证表单数据
-    validAllData() {
-      if (!this.formData.name.trim()) {
-        uni.showToast({
-          title: "请输入姓名！",
-          icon: "none",
-          duration: 2000
-        });
-        return false;
-      }
-      if (!this.formData.phoneNum.trim()) {
-        uni.showToast({ title: "请输入手机号", icon: "none", duration: 2000 });
-        return false;
-      }
-      if (!/^1[3456789]\d{9}$/.test(this.formData.phoneNum)) {
-        uni.showToast({
-          title: "您输入的手机号无效，请重新输入",
-          icon: "none",
-          duration: 2000
-        });
-        return false;
-      }
-      if (!this.formData.captcha.trim()) {
-        uni.showToast({ title: "请输入验证码", icon: "none", duration: 2000 });
-        return false;
-      }
-      if (!this.formData.company.trim()) {
-        uni.showToast({
-          title: "请输入公司名称",
-          icon: "none",
-          duration: 2000
-        });
-        return false;
-      }
-
-      var hasUpload = this.uploadList.every(
-        item => item.image[0] === undefined
-      );
-      console.log("hasUpload:" + hasUpload);
-      if (hasUpload) {
-        uni.showToast({
-          title: "请上传任意一张图片资料",
-          icon: "none",
-          duration: 2000
-        });
-        return false;
-      }
-      return true;
-    },
-    getCaptcha() {
-      if (!this.formData.phoneNum) {
-        uni.showToast({ title: "请输入手机号", icon: "none", duration: 2000 });
-        return;
-      }
-      if (!/^1[3456789]\d{9}$/.test(this.formData.phoneNum)) {
-        uni.showToast({
-          title: "您输入的手机号无效，请重新输入",
-          icon: "none",
-          duration: 2000
-        });
-        return;
-      }
-      if (this.disabled) return;
-      var params = {
-        phoneNum: this.formData.phoneNum
-      };
-      this.$minApi
-        .getCaptcha(params)
-        .then(res => {
-          console.log(res);
-          if (res !== 1) {
-            uni.showToast({
-              title: "获取验证码失败",
-              icon: "none",
-              duration: 2000
-            });
-            return;
-          }
-          this.captchaText = this.time + " 秒";
-          this.disabled = true;
-          var timer = setInterval(() => {
-            this.time--;
-            this.captchaText = this.time + " 秒";
-            if (this.time <= 0) {
-              this.captchaText = "重新发送";
-              this.time = 60;
-              this.disabled = false;
-              clearInterval(timer);
-            }
-          }, 1000);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    // onChnageCaptcha(e) {
-    //   this.captcha = e.target.value
-    // },
-    // 验证验证码
-    async verifySms() {
-      if (!this.formData.captcha.trim()) {
-        uni.showToast({ title: "请输入验证码", icon: "none", duration: 2000 });
-        return;
-      }
-      let verifySms = false;
-      let a = await this.$minApi
-        .verifySms({
-          phoneNum: this.formData.phoneNum,
-          captcha: this.formData.captcha
-        })
-        .then(res => {
-          console.log(res);
-          if (res.code !== "100") {
-            uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
-            // this.captcha = "";
-          } else {
-            verifySms = true;
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-      return verifySms;
-    },
-
-    async uploadImage(imgArr) {
-      var imgUrlArr = [];
-      uni.showLoading({ title: "上传图片中..." });
-      imgArr.forEach(item => {
-        uni.uploadFile({
-          url: "/erp/api/uploadHousePic",
-          filePath: item,
-          name: "file",
-          formData: {
-            type: "house"
-          },
-          success: function(uploadFileRes) {
-            console.log(uploadFileRes);
-          }
-        });
-      });
-
-      return imgUrlArr;
-    },
-
-    async chooseImage(i) {
-      uni.chooseImage({
-        count: 1,
-        success: res => {
-          console.log(res);
-          if (res.tempFilePaths.length > 1) {
-            uni.showToast({
-              title: "最多选择1张图片",
-              icon: "none",
-              duration: 2000
-            });
-            return;
-          }
-          console.log(this.uploadList);
-          this.uploadList[i].image = res.tempFilePaths;
-        }
-      });
-    },
-    // 删除图片
-    removeImage(i) {
-      console.log("remove");
-      this.uploadList[i].image.splice(i, 1);
-    },
     previewImage: function(e) {
       var current = e.target.dataset.src;
       var arr = this.uploadList
@@ -338,22 +124,17 @@ export default {
         current: current,
         urls: arr
       });
+    },
+    againAuth() {
+      uni.navigateTo({
+        url: 'unAuth?data=' + JSON.stringify(this.data)
+      })
     }
   }
 };
 </script>
 
 <style>
-.user-auth {
-  position: relative;
-  padding-bottom: 100upx;
-  background-color: #ffffff;
-}
-.info {
-  padding: 30upx;
-  border-bottom: 1upx solid #dddddd;
-  font-size: 28upx;
-}
 .submit {
   position: fixed;
   left: 0;
@@ -373,44 +154,60 @@ export default {
   border: none;
   border-radius: 0;
 }
-
-.item {
+.user-auth {
+  position: relative;
+  padding-bottom: 100upx;
+  background-color: #ffffff;
+}
+.auth-head {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 0 30upx;
-  height: 100upx;
-  border-bottom: 1upx solid #dddddd;
+  /* justify-content: center; */
+  /* align-items: center; */
+  padding: 30upx;
+  border-bottom: 1px solid #dddddd;
 }
-.item .item-label {
+.user-info {
+  min-width: 0;
   flex: 1;
   font-size: 28upx;
+  color: #949494;
 }
-.item .item-input {
-  flex: 2;
-  font-size: 28upx;
-}
-.item .item-input input {
-  font-size: 28upx;
-}
-.item .item-input.captcha {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 100upx;
-}
-.captcha-btn {
-  width: 140upx;
-  padding: 10upx;
-  border-radius: 10upx;
-  background-color: #d99d40;
-  color: #fff;
-  text-align: center;
-  font-size: 28upx;
+.user-info view {
+  /* width: 100%; */
+  line-height: 60upx;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
-
+.user-info view label {
+  margin-right: 30upx;
+}
+.user-info view text {
+  color: #333333;
+}
+.auth-status {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 146upx;
+  height: 146upx;
+  margin-left: 30upx;
+  background-color: #e4b22f;
+  border: 14upx solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  text-align: center;
+  font-size: 32upx;
+  color: #ffffff;
+}
+.auth-icon {
+  width: 42upx;
+  height: 42upx;
+}
+.fail-text {
+  padding-bottom: 60upx;
+}
 .item-upload {
   padding: 0 30upx;
   border-bottom: 1upx solid #dddddd;
@@ -419,7 +216,7 @@ export default {
 
 .item-upload .item-label {
   height: 80upx;
-  line-height: 100upx;
+  line-height: 80upx;
 }
 
 .item-image-list {
@@ -472,10 +269,5 @@ export default {
   margin-top: 20upx;
   font-size: 26upx;
   color: #949494;
-}
-.image-clear {
-  position: absolute;
-  top: 0;
-  right: 0;
 }
 </style>

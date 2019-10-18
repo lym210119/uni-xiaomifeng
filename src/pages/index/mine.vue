@@ -5,8 +5,8 @@
         <image class="" src="../../static/product-image.png"></image>
       </view>
       <view class="user-info">
-        <view class="username">未认证</view>
-        <view class="user-phone">186****6180</view>
+        <view class="username">{{ data.name || "未认证" }}</view>
+        <view class="user-phone">{{ phoneNum }}</view>
       </view>
     </view>
     <view class="list">
@@ -26,9 +26,11 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 export default {
-  computed: mapState(["hasLogin", "uerInfo"]),
+  computed: mapState(["hasLogin", "userInfo"]),
   data() {
     return {
+      data: {},
+      phoneNum: "",
       list: [
         {
           title: "经纪人认证",
@@ -63,12 +65,37 @@ export default {
       ]
     };
   },
+  onLoad() {
+    console.log(this.userInfo);
+    this.phoneNum = this.userInfo.phoneNum.replace(
+      /(\d{3})\d{4}(\d{4})/,
+      "$1****$2"
+    );
+    this.$minApi
+      .getBrokerDetail({ phoneNum: this.userInfo.phoneNum })
+      .then(res => {
+        if (res.code !== 1) {
+          uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
+          return;
+        }
+        this.data = res.data;
+        console.log(JSON.stringify(this.data))
+      })
+      .catch(err => {
+        uni.showModal({ title: "请求失败", content: err });
+      });
+  },
   methods: {
     ...mapMutations(["logout"]),
     handleLsitClick(item) {
       if (item.title === "退出登录") {
         // 退出
         this.logout();
+      }
+      if (item.title === "经纪人认证") {
+        if (this.data.status === 2 || this.data.status === 3 || this.data.status || 4) {
+          item.url = "auth?data=" + JSON.stringify(this.data);
+        }
       }
       uni.navigateTo({
         url: item.url

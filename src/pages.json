@@ -12,26 +12,28 @@
     {
       "path": "pages/index/detail",
       "style": {
+        "backgroundColor": "#f5f5f5"
       }
     },
     {
       "path": "pages/index/baobei",
       "style": {
-        "navigationBarTitleText": "报备客户"
+        "navigationBarTitleText": "报备客户",
+        "backgroundColor": "#f5f5f5"
       }
     },
     {
       "path": "pages/index/result",
       "style": {
 				"navigationBarTitleText": "报备客户",
-				"backgroundColor": "#ffffff"
+				"backgroundColor": "#f5f5f5"
       }
     },
     {
       "path": "pages/index/login",
       "style": {
         "navigationBarTitleText": "登录",
-        "backgroundColor": "#ffffff",
+        "backgroundColor": "#f5f5f5",
         "navigationBarBackgroundColor": "transparent",
 				"app-plus": {
           "titleNView": {
@@ -44,7 +46,7 @@
       "path": "pages/index/register",
       "style": {
         "navigationBarTitleText": "注册",
-        "backgroundColor": "#ffffff",
+        "backgroundColor": "#f5f5f5",
         "navigationBarBackgroundColor": "transparent",
 				"app-plus": {
           "titleNView": {
@@ -57,7 +59,7 @@
       "path": "pages/index/mine",
       "style": {
         "navigationBarTitleText": "个人中心",
-        "backgroundColor": "#ffffff",
+        "backgroundColor": "#f5f5f5",
         "navigationBarBackgroundColor": "transparent",
 				"app-plus": {
           "titleNView": {
@@ -69,13 +71,29 @@
     {
       "path": "pages/index/unAuth",
       "style": {
-        "navigationBarTitleText": "认证中心"
+        "navigationBarTitleText": "认证中心",
+        "backgroundColor": "#f5f5f5"
       }
     },
     {
       "path": "pages/index/authSubmitSuccess",
       "style": {
-        "navigationBarTitleText": "经纪人认证"
+        "navigationBarTitleText": "经纪人认证",
+        "backgroundColor": "#f5f5f5"
+      }
+    },
+    {
+      "path": "pages/index/auth",
+      "style": {
+        "navigationBarTitleText": "认证中心",
+        "backgroundColor": "#f5f5f5"
+      }
+    },
+    {
+      "path": "pages/index/myBaobeiList",
+      "style": {
+        "navigationBarTitleText": "我报备的客户",
+        "backgroundColor": "#f5f5f5"
       }
     }
   ],

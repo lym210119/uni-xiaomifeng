@@ -4,16 +4,16 @@
       <image class="result-img" src="../../static/apply-success.png"></image>
       <view class="result-text">客户报备成功！</view>
       <view class="userinfo">
-        <view class="name"> 姓名：<text>李**</text> </view>
+        <view class="name"> 姓名：<text>{{data.name}}</text> </view>
         <view class="idcard">
-          身份证号码：<text>420***********361X</text>
+          身份证号码：<text>{{data.IDCard}}</text>
         </view>
-        <view class="datetime"> 保护期至：<text>2019-10-17 19:40</text> </view>
+        <view class="datetime"> 保护期至：<text>{{data.expirationTime}}</text> </view>
       </view>
     </view>
-    <view class="more" @click="toMoreProduct()">
-      <text class="moreBtn baobei">继续报备其他客户</text>
-      <text class="moreBtn mybaobei">查看我报备的客户</text>
+    <view class="more">
+      <text class="moreBtn baobei" @click="toBaobei()">继续报备其他客户</text>
+      <text class="moreBtn mybaobei" @click="toBaobeiList()">查看我报备的客户</text>
     </view>
   </view>
 </template>
@@ -21,18 +21,25 @@
 <script>
 export default {
   onLoad(opts) {
-    console.log(opts);
-    this.result = +opts.r;
+    if (opts.params) {
+      var data = JSON.parse(opts.params)
+      this.data = data
+    }
   },
   data() {
     return {
-      result: false
+      data: {}
     };
   },
   methods: {
-    toMoreProduct() {
+    toBaobei() {
       uni.redirectTo({
-        url: "index"
+        url: "baobei"
+      });
+    },
+    toBaobeiList() {
+      uni.redirectTo({
+        url: "myBaobeiList"
       });
     }
   }

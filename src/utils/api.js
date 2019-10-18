@@ -26,6 +26,15 @@ minRequest.setConfig(config => {
 export default {
   // 这里统一管理api请求
   apis: {
+    // 提交报备
+    submitBaobei(data) {
+      return minRequest.post('/erp/Api/submitCusReport', data)
+    },
+    // 获取认证详情
+    getBrokerDetail(data) {
+      return minRequest.post('/erp/Api/getBrokerDetail', data)
+    },
+    // 认证提交
     submitTrustInfo(data) {
       return minRequest.post('/erp/Api/submitTrustInfo', data)
     },
@@ -57,10 +66,8 @@ export default {
     },
     verifySms(data) {
       return minRequest.post('/erp/Api/verifySms', data)
-    },
-    // submitBaobei(data) {
-    //   return minRequest.post('/erp/Api/submitBaobei', data)
-    // },
+    }
+
     // uploadHousePic(data) {
     //   return minRequest.post('/erp/Api/uploadHousePic', data)
     // },

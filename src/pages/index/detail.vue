@@ -97,7 +97,7 @@ export default {
           console.log(res.res);
           console.log(1);
           var data = res.res;
-          data.iconFile = this.imgBaseUrl + "/upload/xmf/icon/" + data.iconFile;
+          data.iconFile = this.imgBaseUrl + data.iconFile;
           this.obj = data;
           console.log(this.obj);
           uni.setNavigationBarTitle({
