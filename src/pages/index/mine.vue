@@ -44,7 +44,7 @@ export default {
         },
         {
           title: "我报备的客户",
-          url: "myBaobeiList",
+          url: "baobeiList",
           icon: "../../static/mine-mybaobei.png"
         },
         {

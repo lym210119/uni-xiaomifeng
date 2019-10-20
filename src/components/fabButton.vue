@@ -62,7 +62,7 @@ export default {
 .fab-btn {
   position: fixed;
   right: 30upx;
-  bottom: 202upx;
+  bottom: 120upx;
   display: flex;
   flex-direction: column;
   justify-content: center;

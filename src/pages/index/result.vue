@@ -4,16 +4,22 @@
       <image class="result-img" src="../../static/apply-success.png"></image>
       <view class="result-text">客户报备成功！</view>
       <view class="userinfo">
-        <view class="name"> 姓名：<text>{{data.name}}</text> </view>
-        <view class="idcard">
-          身份证号码：<text>{{data.IDCard}}</text>
+        <view class="name">
+          姓名：<text>{{ data.name }}</text>
         </view>
-        <view class="datetime"> 保护期至：<text>{{data.expirationTime}}</text> </view>
+        <view class="idcard">
+          身份证号码：<text>{{ data.IDCard }}</text>
+        </view>
+        <view class="datetime">
+          保护期至：<text>{{ data.expirationTime }}</text>
+        </view>
       </view>
     </view>
     <view class="more">
       <text class="moreBtn baobei" @click="toBaobei()">继续报备其他客户</text>
-      <text class="moreBtn mybaobei" @click="toBaobeiList()">查看我报备的客户</text>
+      <text class="moreBtn mybaobei" @click="toBaobeiList()"
+        >查看我报备的客户</text
+      >
     </view>
   </view>
 </template>
@@ -22,8 +28,8 @@
 export default {
   onLoad(opts) {
     if (opts.params) {
-      var data = JSON.parse(opts.params)
-      this.data = data
+      var data = JSON.parse(opts.params);
+      this.data = data;
     }
   },
   data() {
@@ -39,7 +45,7 @@ export default {
     },
     toBaobeiList() {
       uni.redirectTo({
-        url: "myBaobeiList"
+        url: "baobeiList"
       });
     }
   }

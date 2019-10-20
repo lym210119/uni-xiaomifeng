@@ -410,6 +410,7 @@ export default {
   height: 200upx;
 }
 .item-textarea .item-input textarea {
+
   font-size: 28upx;
 }
 .uni-textarea uni-textarea {

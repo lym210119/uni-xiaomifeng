@@ -26,6 +26,10 @@ minRequest.setConfig(config => {
 export default {
   // 这里统一管理api请求
   apis: {
+    // 获取报备列表
+    getBaobeiList(data) {
+      return minRequest.post('/erp/Api/cus_list', data)
+    },
     // 提交报备
     submitBaobei(data) {
       return minRequest.post('/erp/Api/submitCusReport', data)
@@ -58,9 +62,9 @@ export default {
     getProductDetail(data) {
       return minRequest.post('/erp/Api/getOneProduct', data)
     },
-    // getCityList(data) {
-    //   return minRequest.post('/erp/Api/getCities', data)
-    // },
+    getCityList(data) {
+      return minRequest.post('/erp/Api/getCities', data)
+    },
     getCaptcha(data) {
       return minRequest.post('/erp/Api/sendXmfSms', data)
     },
