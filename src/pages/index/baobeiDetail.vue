@@ -5,9 +5,11 @@
         客户姓名
       </view>
       <view class="item-input item-input-first">
-        <text class="name">李阳明</text>
-        <!-- <text >离保护期还有：<text class="end-date">14天</text></text> -->
-        <text class="overdue">已报备过期</text>
+        <text class="name">{{ data.cusName }}</text>
+        <text v-if="!data.pastdue"
+          >离保护期还有：<text class="end-date">{{ data.endDate }}</text></text
+        >
+        <text v-else class="overdue">已报备过期</text>
       </view>
     </view>
     <view class="item">
@@ -15,7 +17,7 @@
         身份证号码
       </view>
       <view class="item-input">
-        420105********361X
+        {{ data.IdNumber }}
       </view>
     </view>
     <view class="item">
@@ -23,7 +25,7 @@
         客户手机号
       </view>
       <view class="item-input">
-        186****6180
+        {{ data.phone }}
       </view>
     </view>
     <view class="item-textarea">
@@ -31,7 +33,7 @@
         基本情况说明
       </view>
       <view class="item-input uni-textarea">
-        客户征信情况良好、国企工作2年以上，有公积金、 社保。 XXXXXXXXXXXX XXXXXX
+        {{ data.explain }}
       </view>
     </view>
 
@@ -55,39 +57,51 @@
       </view>
     </view>
 
-    <view class="item-upload item-scheme">
+    <view class="item-upload item-scheme" v-if="!data.pastdue">
       <view class="item-label">
         融资方案
       </view>
       <view class="item-image-list">
-        <view v-if="!items.length">融资方案设计中</view>
+        <view v-if="data.pairingState === 1">融资方案设计中</view>
 
         <view class="radio-group" v-else>
           <radio-group @change="radioChange">
             <label
               class="uni-list-cell uni-list-cell-pd"
               v-for="(item, index) in items"
-              :key="item.value"
+              :key="item.pid"
+              v-show="item.pid"
             >
               <view>
                 <radio
-                  :value="item.value"
+                  :value="item.pid"
                   :checked="index === current"
                   color="#d99d40"
                   style="transform:scale(0.7)"
                 />
               </view>
-              <view>{{ item.name }}</view>
+              <view><text>{{ item.name }}： </text> {{ item.desc }}</view>
             </label>
           </radio-group>
         </view>
       </view>
     </view>
 
-    <!-- <button type="button" class="reload-btn" @click="toBaobei()">
+    <button
+      v-if="data.pastdue"
+      type="button"
+      class="reload-btn"
+      @click="toBaobei()"
+    >
       重新报备
-    </button> -->
-    <button type="button" class="baodan-btn" @click="toBaodan()">报单</button>
+    </button>
+    <button v-else
+      type="button"
+      class="baodan-btn"
+      @click="toBaodan()"
+    >
+      报单
+    </button>
     <!-- <button type="button" class="baodan-detail-btn" @click="toBaodanDetail()">查看对应报单详情</button> -->
   </view>
 </template>
@@ -96,32 +110,82 @@
 export default {
   data() {
     return {
-      items: [
-        {
-          value: "USA",
-          name: "美国"
-        },
-        {
-          value: "CHN",
-          name: "中国",
-          checked: "true"
-        },
-        {
-          value: "BRA",
-          name: "巴西"
-        }
-      ],
+      data: {},
+      items: [],
       current: 0,
-      imageList: [
-        "http://192.168.10.208:8099/upload/xmf/baobei/20191020/d77b8c1b002655142188f608b84aad97.png",
-        "http://192.168.10.208:8099/upload/xmf/baobei/20191020/9d2818c170b5ce2f7ac244c95cda2512.png"
-      ]
+      imageList: []
     };
   },
+  onLoad(opts) {
+    if (opts.id) {
+      uni.showLoading()
+      this.getCusDetail(opts.id)
+    }
+  },
   methods: {
+    getCusDetail(id) {
+      this.$minApi
+        .getCusDetail({ cusId: id })
+        .then(res => {
+          uni.hideLoading()
+          if (res.code !== 1) {
+            uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
+            return;
+          }
+          this.data = this.setData(res.data);
+          console.log(this.data)
+          this.imageList = this.data.picUrl
+            .split("|")
+            .map(item => this.imgBaseUrl + item);
+          this.items = this.data.pd;
+        })
+        .catch(err => {
+          uni.showModal({ title: "请求失败", content: err });
+        });
+    },
+    setData(data) {
+        data.IdNumber =
+          data.IdNumber.substr(0, 6) +
+          new Array(data.IdNumber.length - 9).join("*") +
+          data.IdNumber.substr(-4);
+
+        data.phone =
+          data.phone.substr(0, 3) +
+          new Array(data.phone.length - 6).join("*") +
+          data.phone.substr(-4);
+          
+        let timeDiff =
+          new Date(data.expirationTime.replace(/\-/g, "/")).getTime() -
+          new Date().getTime();
+        if (timeDiff <= 0) {
+          data.pastdue = "报备过期";
+        }
+        let endDate = parseInt(timeDiff / 1000 / 60 / 60 / 24);
+        data.endDate = endDate + "天";
+        if (endDate <= 0) {
+          endDate = parseInt(timeDiff / 1000 / 60 / 60);
+          data.endDate = endDate + "小时";
+          if (endDate <= 0) {
+            endDate = parseInt(timeDiff / 1000 / 60);
+            data.endDate = endDate + "分钟";
+          }
+        }
+        return data
+    },
+    radioChange: function(evt) {
+      for (let i = 0; i < this.items.length; i++) {
+        if (this.items[i].pid === evt.target.value) {
+          this.current = i;
+          break;
+        }
+      }
+    },
     toBaodan() {
+      console.log(this.items)
+      var pid = this.items.length ? this.items[this.current].pid : ''
+
       uni.navigateTo({
-        url: "baodan"
+        url: "baodan?pid=" + pid + '&brokerId=' + this.data.brokerId + '&cusId=' + this.data.id
       });
     },
     toBaobei() {

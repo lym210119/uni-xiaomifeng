@@ -28,7 +28,7 @@ export default {
               }
               if (e.data.code === 4) {
                 // console.log('tuichuaaa')
-                this.logout()
+                // this.logout()
               }
             }
           }

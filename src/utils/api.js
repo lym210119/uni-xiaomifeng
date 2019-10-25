@@ -26,9 +26,25 @@ minRequest.setConfig(config => {
 export default {
   // 这里统一管理api请求
   apis: {
+    // 提交报单
+    submitDeclaration(data) {
+      return minRequest.post('/erp/Api/submitDeclaration', data)
+    },
+    // 获取报单跟进资料
+    getInfoData(data) {
+      return minRequest.post('/erp/Api/getDeclarationDetail', data)
+    },
+    // 获取所有产品
+    getAllProducts(data) {
+      return minRequest.post('/erp/Api/getAllProducts', data)
+    },
+    // 获取某报备客户详细信息
+    getCusDetail(data) {
+      return minRequest.post('/erp/Api/getCusDetail', data)
+    },
     // 获取报备列表
     getBaobeiList(data) {
-      return minRequest.post('/erp/Api/cus_list', data)
+      return minRequest.post('/erp/Api/getAllHasReported', data)
     },
     // 提交报备
     submitBaobei(data) {

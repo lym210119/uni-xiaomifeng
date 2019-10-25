@@ -14,19 +14,14 @@
           />
         </view>
       </view>
-      <view class="item">
+      <!-- <view class="item">
         <view class="item-label">
           客户性别
         </view>
         <view class="item-input">
           <radio-group name="gender">
             <label class="radio" style="margin-right: 30upx;">
-              <radio
-                value="1"
-                checked="true"
-                color="#d99d40"
-                style="transform:scale(0.7)"
-              />
+              <radio value="1" color="#d99d40" style="transform:scale(0.7)" />
               先生
             </label>
             <label class="radio">
@@ -35,7 +30,7 @@
             </label>
           </radio-group>
         </view>
-      </view>
+      </view> -->
       <view class="item">
         <view class="item-label">
           身份证号码
@@ -47,7 +42,7 @@
             placeholder="请输入身份证号码"
             maxlength="18"
           />
-          <text class="search-btn">检索资料</text>
+          <!-- <text class="search-btn">检索资料</text> -->
         </view>
       </view>
       <view class="item">
@@ -68,15 +63,10 @@
           联系地址
         </view>
         <view class="item-input">
-          <input
-            type="text"
-            name="address"
-            placeholder="请输入联系地址"
-            maxlength="11"
-          />
+          <input type="text" name="address" placeholder="请输入联系地址" />
         </view>
       </view>
-      <view class="item">
+      <!-- <view class="item">
         <view class="item-label">
           客户年龄
         </view>
@@ -88,22 +78,28 @@
             maxlength="2"
           />
         </view>
-      </view>
+      </view> -->
       <block v-for="(item, i) in pickerAll" :key="i">
         <view class="item">
           <view class="item-label">
             {{ item.title }}
           </view>
           <view class="item-input input-city">
-            <!-- <input type="text" placeholder="请选择所在城市" /> -->
-            <picker
-              @change="bindPickerChange($event, i)"
+            <!-- picker 隐藏域 -->
+            <input
+              v-show="false"
+              type="text"
               :name="item.name"
-              :range="item.list"
               :value="JSON.stringify(item.list[item.current])"
+            />
+            <picker
+              class="picker"
+              @change="bindPickerChange($event, i)"
+              :range="item.list"
+              :value="item.current"
               :range-key="'name'"
             >
-              <view :class="{ 'uni-input': !item.current }">
+              <view :class="{ 'uni-input': item.current === null }">
                 {{
                   item.current === null
                     ? "请选择" + item.title
@@ -128,7 +124,7 @@
           />
         </view>
       </view>
-      <view class="item">
+      <!-- <view class="item">
         <view class="item-label">
           核定金额
         </view>
@@ -140,20 +136,15 @@
             maxlength="10"
           />
         </view>
-      </view>
+      </view> -->
       <view class="item">
         <view class="item-label">
           进件方式
         </view>
-        <label class="item-input">
+        <view class="item-input">
           <radio-group name="intoType">
             <label class="radio" style="margin-right: 30upx;">
-              <radio
-                value="1"
-                checked="true"
-                color="#d99d40"
-                style="transform:scale(0.7)"
-              />
+              <radio value="1" color="#d99d40" style="transform:scale(0.7)" />
               抵押
             </label>
             <label class="radio">
@@ -161,7 +152,7 @@
               信贷
             </label>
           </radio-group>
-        </label>
+        </view>
       </view>
       <view class="item">
         <view class="item-label">
@@ -174,14 +165,20 @@
             placeholder="请输入期限"
             maxlength="10"
           />
+          <!-- picker 隐藏域 -->
+          <input
+            v-show="false"
+            type="text"
+            name="loansDateUnit"
+            :value="JSON.stringify(loansDate[loansDateIndex])"
+          />
           <picker
             @change="bindPickerChange"
-            name="loansDateUnit"
             :range="loansDate"
-            :value="JSON.stringify(loansDate[loansDateIndex])"
+            :value="loansDateIndex"
             :range-key="'name'"
           >
-            <view class="uni-input">
+            <view :class="{ 'uni-input': loansDateIndex === null }">
               {{
                 loansDateIndex === null
                   ? "请选择"
@@ -196,15 +193,10 @@
         <view class="item-label">
           收费方式
         </view>
-        <label class="item-input">
+        <view class="item-input">
           <radio-group name="tollType">
             <label class="radio" style="margin-right: 30upx;">
-              <radio
-                value="1"
-                checked="true"
-                color="#d99d40"
-                style="transform:scale(0.7)"
-              />
+              <radio value="1" color="#d99d40" style="transform:scale(0.7)" />
               按比例收费
             </label>
             <label class="radio">
@@ -212,7 +204,7 @@
               按笔数收费
             </label>
           </radio-group>
-        </label>
+        </view>
       </view>
       <view class="item">
         <view class="item-label">
@@ -227,7 +219,7 @@
           />
         </view>
       </view>
-      <view class="item">
+      <!-- <view class="item">
         <view class="item-label">
           其他收费
         </view>
@@ -239,20 +231,15 @@
             maxlength="10"
           />
         </view>
-      </view>
+      </view> -->
       <view class="item">
         <view class="item-label">
           评估方式
         </view>
-        <label class="item-input">
+        <view class="item-input">
           <radio-group name="assessType">
             <label class="radio" style="margin-right: 30upx;">
-              <radio
-                value="1"
-                checked="true"
-                color="#d99d40"
-                style="transform:scale(0.7)"
-              />
+              <radio value="1" color="#d99d40" style="transform:scale(0.7)" />
               按比例
             </label>
             <label class="radio">
@@ -260,7 +247,7 @@
               按笔数
             </label>
           </radio-group>
-        </label>
+        </view>
       </view>
       <view class="item">
         <view class="item-label">
@@ -295,10 +282,10 @@
         <view class="item-upload">
           <view class="item-label">
             {{ item.title }}
-            <text v-if="i === 1 || i === 2" class="item-label-small"
+            <text v-if="i === 2 || i === 3" class="item-label-small"
               >（最多2张图片）</text
             >
-            <text v-if="i === 3" class="item-label-small">（最多5张图片）</text>
+            <text v-if="i === 4" class="item-label-small">（最多5张图片）</text>
           </view>
           <view class="item-image-list">
             <view class="uni-uploader__files">
@@ -308,17 +295,17 @@
                     class="uni-uploader__img"
                     :src="image"
                     :data-src="image"
-                    @tap="previewImage"
+                    @tap="previewImage($event, i)"
                   ></image>
                   <!-- <input type="hidden" :name="item.name" :value="item.image[0]"> -->
-                  <view class="image-clear" @click.stop="removeImage(index)">
+                  <view class="image-clear" @click.stop="removeImage(i, index)">
                     <icon type="clear" size="26" />
                   </view>
                 </view>
               </block>
               <view
                 class="uni-uploader__input-box"
-                v-show="!(item.image.length === maxCount)"
+                v-if="!(item.image.length >= item.maxCount)"
               >
                 <view class="uni-uploader__input" @tap="chooseImage(i)">
                   <image
@@ -328,10 +315,13 @@
                   <text class="upload-text" v-if="i === 0"
                     >请上传身份证头像面</text
                   >
+                  <text class="upload-text" v-else-if="i === 1"
+                    >请上传身份证国徽面</text
+                  >
                   <text class="upload-text" v-else>请上传图片</text>
                 </view>
               </view>
-              <view class="uni-uploader__input-box" v-if="i === 0">
+              <!-- <view class="uni-uploader__input-box" v-if="i === 0">
                 <view class="uni-uploader__input" @tap="chooseImage(i)">
                   <image
                     class="upload-image"
@@ -339,13 +329,13 @@
                   ></image>
                   <text class="upload-text">请上传身份证国徽面</text>
                 </view>
-              </view>
+              </view> -->
             </view>
           </view>
         </view>
       </block>
       <button class="submit" form-type="submit">
-        提交报备资料
+        提交报单
       </button>
     </form>
     <fabButton></fabButton>
@@ -363,7 +353,23 @@ export default {
   data() {
     return {
       pickerAll: [
-        { title: "所属职业", name: "job", list: [], current: null },
+        {
+          title: "所属职业",
+          name: "job",
+          list: [
+            { name: "国家干部/公务员", value: 1 },
+            { name: "国企/事业单位", value: 2 },
+            { name: "教师", value: 3 },
+            { name: "医生", value: 4 },
+            { name: "律师", value: 5 },
+            { name: "外企/私企", value: 6 },
+            { name: "企业法人股东", value: 7 },
+            { name: "个体工商户", value: 8 },
+            { name: "自由职业者", value: 9 },
+            { name: "其他", value: 10 }
+          ],
+          current: null
+        },
         { title: "所在城市", name: "city", list: [], current: null },
         { title: "贷款产品", name: "product", list: [], current: null }
       ],
@@ -374,98 +380,217 @@ export default {
       ],
       loansDateIndex: null,
       uploadList: [
-        { title: "身份证", name: "IDCard", image: [] },
-        { title: "房产证", name: "houseImg", image: [] },
-        { title: "行驶证", name: "carImg", image: [] },
-        { title: "征信", name: "creditImg", image: [] }
+        { title: "身份证（正面）", name: "IDCardImg1", image: [], maxCount: 1 },
+        { title: "身份证（反面）", name: "IDCardImg2", image: [], maxCount: 1 },
+        { title: "房产证", name: "houseImg", image: [], maxCount: 2 },
+        { title: "行驶证", name: "carImg", image: [], maxCount: 2 },
+        { title: "征信", name: "creditImg", image: [], maxCount: 5 }
       ],
-      maxCount: 1
+      pid: '',
+      cusId: '',
+      brokerId: ''
     };
   },
   onLoad(opts) {
+    // if (opts.pid) {
+      this.pid = opts.pid
+      this.cusId = opts.cusId,
+      this.brokerId = opts.brokerId
+    // }
     this.getCityList();
+    this.getProductList();
   },
   methods: {
-    formSubmit: function(e) {
+    async formSubmit(e) {
       var formdata = e.detail.value;
+      this.uploadList.forEach(item => {
+        formdata[item.name] = item.image
+          .map(item => item.replace(this.imgBaseUrl, ""))
+          .join("|");
+      });
       console.log(formdata);
+      let valid = await this.validAllData(formdata);
+      if (valid) {
+        console.log(123)
+        formdata.pid = this.pid
+        formdata.cusId = this.cusId
+        formdata.brokerId = this.brokerId
+        console.log(formdata);
+        this.$minApi.submitDeclaration(formdata).then( res=> {
+          if (res.code !== 1) {
+            uni.showToast({title: res.msg, icon: 'none', duration: 2000})
+            return
+          }
+          uni.showToast({title: res.msg, icon: 'none', duration: 2000})
+          setTimeout(() => {
+            uni.navigateTo({
+              url: "baodanList"
+            });
+          }, 2000);
+        }).catch(err => {
+          uni.showModal({title: '请求失败', content: err})
+        })
+      }
+    },
+    // 验证表单数据
+    validAllData(form) {
+      var errTips = {
+        name: "请输入姓名",
+        // gender: "请选择性别",
+        IDCard: "请输入身份证号码",
+        phoneNum: "请输入手机号码",
+        address: "请输入联系地址",
+        // age: "请输入客户年龄",
+        job: "请选择所属职业",
+        city: "请选择所在城市",
+        product: "请选择贷款产品",
+        loansMoney: "请输入贷款金额",
+        // checkMoney: "请输入核定金额",
+        intoType: "请选择进件方式",
+        loansDate: "请输入贷款期限",
+        loansDateUnit: "请选择贷款期限单位",
+        tollType: "请选择收费方式",
+        tollMoney: "请输入贷款收费",
+        // tollOther: "请输入其他收费",
+        assessType: "请选择评估方式",
+        assessToll: "请输入评估收费",
+        chargesNotes: "请输入收费说明",
+        signRemark: "请输入签单备注",
+        IDCardImg1: "请上传身份证头像面",
+        IDCardImg2: "请上传身份证国徽面",
+        houseImg: "请上传房产证",
+        carImg: "请上传行驶证",
+        creditImg: "请上传征信"
+      };
+      for (let key in form) {
+        console.log(key);
+        if (!form[key]) {
+          uni.showToast({ title: errTips[key], icon: "none", duration: 2000 });
+          return false;
+        }
+      }
+      if (
+        !/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(
+          form.IDCard
+        )
+      ) {
+        uni.showToast({
+          title: "您输入的身份证号码无效，请重新输入",
+          icon: "none",
+          duration: 2000
+        });
+        return false;
+      }
+      if (!/^1[3456789]\d{9}$/.test(form.phoneNum)) {
+        uni.showToast({
+          title: "您输入的手机号无效，请重新输入",
+          icon: "none",
+          duration: 2000
+        });
+        return false;
+      }
+
+      return true;
     },
     chooseImage(i) {
-      if (i === 1 || i === 2) {
-        this.maxCount = 2;
-      } else if (i === 3) {
-        this.maxCount = 5;
-      }
+      var maxCount = this.uploadList[i].maxCount;
       uni.chooseImage({
-        count: this.maxCount,
+        count: maxCount,
         success: chooseImageRes => {
           console.log(chooseImageRes);
           const tempFilePaths = chooseImageRes.tempFilePaths;
-          if (tempFilePaths.length > this.maxCount) {
+          if (tempFilePaths.length > maxCount) {
             uni.showToast({
-              title: "最多选择" + this.maxCount + "张图片",
+              title: "最多选择" + maxCount + "张图片",
               icon: "none",
               duration: 2000
             });
             return;
           }
           console.log(this.uploadList);
-          this.uploadList[i].image = this.uploadList[i].image.concat(
-            tempFilePaths
-          );
-
-          // uni.showLoading({ title: "上传图片中..." });
-          // uni.uploadFile({
-          //   url: "/erp/api/uploadHousePic",
-          //   filePath: tempFilePaths[0],
-          //   name: "file",
-          //   formData: {
-          //     type: this.uploadList[i].name
-          //   },
-          //   success: uploadFileRes => {
-          //     console.log(uploadFileRes);
-          //     if (uploadFileRes.statusCode === 200) {
-          //       var data = JSON.parse(uploadFileRes.data);
-          //       console.log(data);
-          //       if (data.code !== "100") {
-          //         uni.showToast({
-          //           title: data.msg,
-          //           icon: "none",
-          //           duration: 2000
-          //         });
-          //         return;
-          //       }
-          //       uni.hideLoading();
-          //       this.uploadList[i].image = tempFilePaths;
-          //       this.formData[this.uploadList[i].name] = data.url;
-          //     }
-          //   }
-          // });
+          // this.uploadList[i].image = this.uploadList[i].image.concat(
+          //   tempFilePaths
+          // );
+          uni.showLoading({ title: "上传图片中..." });
+          uni.uploadFile({
+            url: "/erp/api/uploadHousePic",
+            filePath: tempFilePaths[0],
+            name: "file",
+            formData: {
+              type: this.uploadList[i].name
+            },
+            success: uploadFileRes => {
+              console.log(uploadFileRes);
+              if (uploadFileRes.statusCode === 200) {
+                var data = JSON.parse(uploadFileRes.data);
+                console.log(data);
+                if (data.code !== "100") {
+                  uni.showToast({
+                    title: data.msg,
+                    icon: "none",
+                    duration: 2000
+                  });
+                  return;
+                }
+                uni.hideLoading();
+                this.uploadList[i].image.push(this.imgBaseUrl + data.url);
+              }
+            }
+          });
         }
       });
     },
+    previewImage: function(e, i) {
+      console.log(e);
+      var current = e.target.dataset.src;
+      uni.previewImage({
+        current: current,
+        urls: this.uploadList[i].image
+      });
+    },
     // 删除图片
-    removeImage(i) {
+    removeImage(i, index) {
       console.log("remove");
-      this.uploadList[i].image.splice(i, 1);
+      this.uploadList[i].image.splice(index, 1);
     },
     bindPickerChange: function(e, i) {
       console.log(e);
       console.log("picker发送选择改变，携带值为", e.target.value);
       console.log(e.target.value);
-      this.pickerAll[i].current = e.target.value;
+      if (i || i === 0) {
+        this.pickerAll[i].current = e.target.value;
+      } else {
+        this.loansDateIndex = e.target.value;
+      }
+    },
+    getProductList() {
+      this.$minApi
+        .getAllProducts()
+        .then(res => {
+          console.log(res);
+          if (res.code !== 1) {
+            uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
+            return;
+          }
+          this.pickerAll[2].list = res.data;
+        })
+        .catch(err => {
+          uni.showModal({ title: "请求失败", content: err });
+        });
     },
     getCityList() {
       this.$minApi
         .getCityList()
         .then(res => {
           console.log(res);
-          if (res.code === "100") {
-            this.pickerAll[1].list = res.res;
+          if (res.code !== "100") {
+            uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
+            return;
           }
+          this.pickerAll[1].list = res.res;
         })
         .catch(err => {
-          alert(err);
+          uni.showModal({ title: "请求失败", content: err });
         });
     }
   }
@@ -640,5 +765,8 @@ export default {
   height: 29upx;
   background: url("../../static/arrow.png") no-repeat center center;
   background-size: 18upx 29upx;
+}
+.input-city .picker {
+  flex: 1;
 }
 </style>

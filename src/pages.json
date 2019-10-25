@@ -110,6 +110,20 @@
         "navigationBarTitleText": "提交报单资料",
         "backgroundColor": "#f5f5f5"
       }
+    },
+    {
+      "path": "pages/index/baodanList",
+      "style": {
+        "navigationBarTitleText": "我的业务报单",
+        "backgroundColor": "#f5f5f5"
+      }
+    },
+    {
+      "path": "pages/index/baodanDetail",
+      "style": {
+        "navigationBarTitleText": "报单信息详情",
+        "backgroundColor": "#f5f5f5"
+      }
     }
   ],
   "globalStyle": {

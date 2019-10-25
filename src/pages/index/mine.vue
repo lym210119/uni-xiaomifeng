@@ -2,7 +2,7 @@
   <view class="page">
     <view class="img-view">
       <view class="user-avatar">
-        <image class="" src="../../static/product-image.png"></image>
+        <image class="" src="../../static/logo.png"></image>
       </view>
       <view class="user-info">
         <view class="username">{{ data.name || "未认证" }}</view>
@@ -49,7 +49,7 @@ export default {
         },
         {
           title: "我的业务报单",
-          url: "myWorkOrder",
+          url: "baodanList",
           icon: "../../static/mine-myWorkOrder.png"
         },
         {
@@ -65,7 +65,7 @@ export default {
       ]
     };
   },
-  onLoad() {
+  onShow() {
     console.log(this.userInfo);
     this.phoneNum = this.userInfo.phoneNum.replace(
       /(\d{3})\d{4}(\d{4})/,
@@ -79,7 +79,7 @@ export default {
           return;
         }
         this.data = res.data;
-        console.log(JSON.stringify(this.data))
+        console.log(JSON.stringify(this.data));
       })
       .catch(err => {
         uni.showModal({ title: "请求失败", content: err });
@@ -90,16 +90,36 @@ export default {
     handleLsitClick(item) {
       if (item.title === "退出登录") {
         // 退出
-        this.logout();
-      }
-      if (item.title === "经纪人认证") {
-        if (this.data.status === 2 || this.data.status === 3 || this.data.status || 4) {
+        uni.showModal({
+          title: "确定要退出吗?",
+          content: "",
+          success: (res) => {
+            if (res.confirm) {
+              this.logout();
+              uni.navigateTo({
+                url: item.url
+              });
+            } else if (res.cancel) {
+              console.log("用户点击取消");
+            }
+          }
+        });
+      } else if (item.title === "经纪人认证") {
+        if (
+          this.data.status === 2 ||
+          this.data.status === 3 ||
+          this.data.status === 4
+        ) {
           item.url = "auth?data=" + JSON.stringify(this.data);
+          uni.navigateTo({
+            url: item.url
+          });
         }
+      } else {
+        uni.navigateTo({
+          url: item.url
+        });
       }
-      uni.navigateTo({
-        url: item.url
-      });
     }
   }
 };
