@@ -9,6 +9,7 @@
           <input
             type="text"
             name="name"
+            v-model="propsData.cusName"
             placeholder="请输入客户姓名"
             maxlength="11"
           />
@@ -39,6 +40,7 @@
           <input
             type="text"
             name="IDCard"
+            v-model="propsData.IdNumber"
             placeholder="请输入身份证号码"
             maxlength="18"
           />
@@ -53,6 +55,7 @@
           <input
             type="number"
             name="phoneNum"
+            v-model="propsData.phone"
             placeholder="请输入手机号码"
             maxlength="11"
           />
@@ -194,7 +197,7 @@
           收费方式
         </view>
         <view class="item-input">
-          <radio-group name="tollType">
+          <radio-group name="tollType" @change="handleTollTypeChange">
             <label class="radio" style="margin-right: 30upx;">
               <radio value="1" color="#d99d40" style="transform:scale(0.7)" />
               按比例收费
@@ -214,7 +217,9 @@
           <input
             type="number"
             name="tollMoney"
-            placeholder="请输入贷款收费(元)"
+            :placeholder="
+              flag1 === '1' ? '请输入贷款收费(‰)' : '请输入贷款收费(元)'
+            "
             maxlength="10"
           />
         </view>
@@ -237,7 +242,7 @@
           评估方式
         </view>
         <view class="item-input">
-          <radio-group name="assessType">
+          <radio-group name="assessType" @change="handleAssessTypeChange">
             <label class="radio" style="margin-right: 30upx;">
               <radio value="1" color="#d99d40" style="transform:scale(0.7)" />
               按比例
@@ -257,7 +262,9 @@
           <input
             type="number"
             name="assessToll"
-            placeholder="请输入其他收费(元)"
+            :placeholder="
+              flag2 === '1' ? '请输入贷款收费(‰)' : '请输入贷款收费(元)'
+            "
             maxlength="10"
           />
         </view>
@@ -272,7 +279,7 @@
       </view>
       <view class="item-textarea">
         <view class="item-label">
-          签单备注
+          报单备注
         </view>
         <view class="item-input uni-textarea">
           <textarea name="signRemark" placeholder="请输入内容" />
@@ -386,16 +393,20 @@ export default {
         { title: "行驶证", name: "carImg", image: [], maxCount: 2 },
         { title: "征信", name: "creditImg", image: [], maxCount: 5 }
       ],
-      pid: '',
-      cusId: '',
-      brokerId: ''
+      // pid: '',
+      // cusId: '',
+      // brokerId: '',
+      propsData: {},
+      flag1: "1",
+      flag2: "1"
     };
   },
   onLoad(opts) {
-    // if (opts.pid) {
-      this.pid = opts.pid
-      this.cusId = opts.cusId,
-      this.brokerId = opts.brokerId
+    // if (opts.data) {
+    this.propsData = JSON.parse(opts.data);
+
+    // this.cusId = opts.cusId,
+    // this.brokerId = opts.brokerId
     // }
     this.getCityList();
     this.getProductList();
@@ -411,25 +422,28 @@ export default {
       console.log(formdata);
       let valid = await this.validAllData(formdata);
       if (valid) {
-        console.log(123)
-        formdata.pid = this.pid
-        formdata.cusId = this.cusId
-        formdata.brokerId = this.brokerId
+        console.log(123);
+        formdata.pid = this.propsData.pid;
+        formdata.cusId = this.propsData.cusId;
+        formdata.brokerId = this.propsData.brokerId;
         console.log(formdata);
-        this.$minApi.submitDeclaration(formdata).then( res=> {
-          if (res.code !== 1) {
-            uni.showToast({title: res.msg, icon: 'none', duration: 2000})
-            return
-          }
-          uni.showToast({title: res.msg, icon: 'none', duration: 2000})
-          setTimeout(() => {
-            uni.navigateTo({
-              url: "baodanList"
-            });
-          }, 2000);
-        }).catch(err => {
-          uni.showModal({title: '请求失败', content: err})
-        })
+        this.$minApi
+          .submitDeclaration(formdata)
+          .then(res => {
+            if (res.code !== 1) {
+              uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
+              return;
+            }
+            uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
+            setTimeout(() => {
+              uni.navigateTo({
+                url: "baodanList"
+              });
+            }, 2000);
+          })
+          .catch(err => {
+            uni.showModal({ title: "请求失败", content: err });
+          });
       }
     },
     // 验证表单数据
@@ -573,6 +587,11 @@ export default {
             return;
           }
           this.pickerAll[2].list = res.data;
+          if (this.propsData.pid) {
+            this.pickerAll[2].current = this.pickerAll[2].list.findIndex(
+              item => item.id == this.propsData.pid
+            );
+          }
         })
         .catch(err => {
           uni.showModal({ title: "请求失败", content: err });
@@ -592,6 +611,12 @@ export default {
         .catch(err => {
           uni.showModal({ title: "请求失败", content: err });
         });
+    },
+    handleTollTypeChange(evt) {
+      this.flag1 = evt.target.value;
+    },
+    handleAssessTypeChange(evt) {
+      this.flag2 = evt.target.value;
     }
   }
 };

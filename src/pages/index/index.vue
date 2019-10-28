@@ -140,11 +140,11 @@ export default {
         url: "detail?id=" + id
       });
     },
-    toBaobei() {
-      uni.navigateTo({
-        url: "baobei"
-      });
-    },
+    // toBaobei() {
+    //   uni.navigateTo({
+    //     url: "baobei"
+    //   });
+    // },
     toMine() {
       uni.navigateTo({
         url: "mine"

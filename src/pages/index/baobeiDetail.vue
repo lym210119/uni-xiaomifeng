@@ -69,7 +69,7 @@
             <label
               class="uni-list-cell uni-list-cell-pd"
               v-for="(item, index) in items"
-              :key="item.pid"
+              :key="index"
               v-show="item.pid"
             >
               <view>
@@ -80,7 +80,7 @@
                   style="transform:scale(0.7)"
                 />
               </view>
-              <view><text>{{ item.name }}： </text> {{ item.desc }}</view>
+              <view><text class="product-name">{{ item.name }}： </text> {{ item.desc }}</view>
             </label>
           </radio-group>
         </view>
@@ -113,7 +113,8 @@ export default {
       data: {},
       items: [],
       current: 0,
-      imageList: []
+      imageList: [],
+      originData: {}
     };
   },
   onLoad(opts) {
@@ -132,6 +133,7 @@ export default {
             uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
             return;
           }
+          this.originData = JSON.parse(JSON.stringify(res.data))
           this.data = this.setData(res.data);
           console.log(this.data)
           this.imageList = this.data.picUrl
@@ -182,10 +184,17 @@ export default {
     },
     toBaodan() {
       console.log(this.items)
-      var pid = this.items.length ? this.items[this.current].pid : ''
-
+      // var pid = this.items.length ? this.items[this.current].pid : ''
+      var data = {
+        pid: this.items.length ? this.items[this.current].pid : '',
+        brokerId: this.originData.brokerId,
+        cusId: this.originData.id,
+        cusName: this.originData.cusName,
+        IdNumber: this.originData.IdNumber,
+        phone: this.originData.phone
+      }
       uni.navigateTo({
-        url: "baodan?pid=" + pid + '&brokerId=' + this.data.brokerId + '&cusId=' + this.data.id
+        url: "baodan?data=" + JSON.stringify(data)
       });
     },
     toBaobei() {
@@ -279,7 +288,7 @@ export default {
   flex-direction: row;
   /* justify-content: space-between; */
   align-items: center;
-  height: 80upx;
+  /* height: 80upx; */
 }
 .baodan-btn,
 .reload-btn,
@@ -303,5 +312,8 @@ export default {
 .baodan-detail-btn::after {
   border: none;
   border-radius: 0;
+}
+.product-name {
+  color: #d99d40;
 }
 </style>

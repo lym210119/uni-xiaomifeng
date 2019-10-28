@@ -34,8 +34,15 @@ export default {
           url: "baobei"
         });
       } else {
-        uni.navigateTo({
-          url: "login"
+        uni.showModal({
+          title: "提示",
+          content: "请先登录",
+          showCancel: false,
+          success: function(res) {
+            uni.navigateTo({
+              url: "login"
+            });
+          }
         });
       }
     },
@@ -46,8 +53,15 @@ export default {
           url: "mine"
         });
       } else {
-        uni.navigateTo({
-          url: "login"
+        uni.showModal({
+          title: "提示",
+          content: "请先登录",
+          showCancel: false,
+          success: function(res) {
+            uni.navigateTo({
+              url: "login"
+            });
+          }
         });
       }
     },

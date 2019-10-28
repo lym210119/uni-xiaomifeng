@@ -13,7 +13,7 @@
         客户性别
       </view>
       <view class="item-input item-input-first">
-        <text class="name">{{ data.cusName }}</text>
+        <text class="name">{{ data.sex }}</text>
       </view>
     </view>
     <view class="item">

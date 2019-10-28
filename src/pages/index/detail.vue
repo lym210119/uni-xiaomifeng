@@ -76,8 +76,10 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 import fabButton from "../../components/fabButton";
 export default {
+  computed: mapState(["hasLogin", "usrInfo"]),
   components: {
     fabButton
   },
@@ -111,9 +113,22 @@ export default {
   },
   methods: {
     tobaobei(id) {
-      uni.navigateTo({
-        url: "baobei?id=" + id
-      });
+      if (this.hasLogin) {
+        uni.navigateTo({
+          url: "baobei?id=" + id
+        });
+      } else {
+        uni.showModal({
+          title: "提示",
+          content: "请先登录",
+          showCancel: false,
+          success: function(res) {
+            uni.navigateTo({
+              url: "login"
+            });
+          }
+        });
+      }
     }
   }
 };

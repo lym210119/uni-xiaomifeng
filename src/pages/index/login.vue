@@ -82,17 +82,17 @@ export default {
         phoneNum: this.phoneNum,
         loginType: this.cur
       };
-      if (this.cur === 0) {
-        // 验证码登录
-        if (!this.captcha.trim()) {
-          uni.showToast({
-            title: "请输入验证码",
-            icon: "none",
-            duration: 2000
-          });
-          return false;
-        }
-        if (valid) {
+      if (valid) {
+        if (this.cur === 0) {
+          // 验证码登录
+          if (!this.captcha.trim()) {
+            uni.showToast({
+              title: "请输入验证码",
+              icon: "none",
+              duration: 2000
+            });
+            return false;
+          }
           let verifySms = await this.verifySms();
 
           if (verifySms) {
@@ -120,28 +120,32 @@ export default {
                 console.log(err);
               });
           }
-        }
-      } else {
-        params.password = this.password;
-        this.$minApi
-          .brokerLogin(params)
-          .then(res => {
-            console.log(res);
-            if (res.code !== 1) {
+        } else {
+          if (!this.password.trim()) {
+            uni.showToast({ title: "请输入密码", icon: "none", duration: 2000 });
+            return false;
+          }
+          params.password = this.password;
+          this.$minApi
+            .brokerLogin(params)
+            .then(res => {
+              console.log(res);
+              if (res.code !== 1) {
+                uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
+                return;
+              }
               uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
-              return;
-            }
-            uni.showToast({ title: res.msg, icon: "none", duration: 2000 });
-            this.login(res.data);
-            setTimeout(() => {
-              uni.navigateTo({
-                url: "index"
-              });
-            }, 2000);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+              this.login(res.data);
+              setTimeout(() => {
+                uni.navigateTo({
+                  url: "index"
+                });
+              }, 2000);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
       }
     },
     // 获取验证码
@@ -255,7 +259,7 @@ export default {
   position: relative;
   width: 750upx;
   height: 480upx;
-  background: url("../../static/login-bg.png") no-repeat center center;
+  background: url(../../static/login-bg.png) no-repeat center center;
   background-size: 750upx 480upx;
 }
 .login-logo {

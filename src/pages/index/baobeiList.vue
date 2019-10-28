@@ -49,7 +49,7 @@
             >
           </view>
           <view class="item-right" @click="toDetail(item.id)"
-            >查看融资方案</view
+            >{{planArr[item.pairingState]}}</view
           >
         </view>
       </view>
@@ -81,6 +81,7 @@ export default {
   computed: mapState(["userInfo"]),
   data() {
     return {
+      planArr: ['', '方案设计中', '已出方案', '无方案'],
       nodata: false,
       searchNodata: false,
       listData: [],

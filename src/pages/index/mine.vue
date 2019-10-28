@@ -17,7 +17,8 @@
         @click="handleLsitClick(item)"
       >
         <image class="list-icon" :src="item.icon"></image>
-        <text class="list-text">{{ item.title }}</text>
+        <text class="list-text" v-if="i === 0">{{ item.title }} ({{status[data.status]}})</text>
+        <text class="list-text" v-else>{{ item.title }}</text>
       </view>
     </view>
   </view>
@@ -29,6 +30,7 @@ export default {
   computed: mapState(["hasLogin", "userInfo"]),
   data() {
     return {
+      status: ['', '未认证', '认证中', '已认证'],
       data: {},
       phoneNum: "",
       list: [
@@ -93,7 +95,7 @@ export default {
         uni.showModal({
           title: "确定要退出吗?",
           content: "",
-          success: (res) => {
+          success: res => {
             if (res.confirm) {
               this.logout();
               uni.navigateTo({
@@ -111,6 +113,10 @@ export default {
           this.data.status === 4
         ) {
           item.url = "auth?data=" + JSON.stringify(this.data);
+          uni.navigateTo({
+            url: item.url
+          });
+        } else {
           uni.navigateTo({
             url: item.url
           });
