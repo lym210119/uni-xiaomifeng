@@ -218,7 +218,7 @@
             type="number"
             name="tollMoney"
             :placeholder="
-              flag1 === '1' ? '请输入贷款收费(‰)' : '请输入贷款收费(元)'
+              flag1 === '1' ? '请输入贷款收费(%)' : '请输入贷款收费(元)'
             "
             maxlength="10"
           />
@@ -263,7 +263,7 @@
             type="number"
             name="assessToll"
             :placeholder="
-              flag2 === '1' ? '请输入贷款收费(‰)' : '请输入贷款收费(元)'
+              flag2 === '1' ? '请输入贷款收费(%)' : '请输入贷款收费(元)'
             "
             maxlength="10"
           />
@@ -466,17 +466,25 @@ export default {
         tollType: "请选择收费方式",
         tollMoney: "请输入贷款收费",
         // tollOther: "请输入其他收费",
-        assessType: "请选择评估方式",
-        assessToll: "请输入评估收费",
+        // assessType: "请选择评估方式",
+        // assessToll: "请输入评估收费",
         chargesNotes: "请输入收费说明",
         signRemark: "请输入签单备注",
         IDCardImg1: "请上传身份证头像面",
-        IDCardImg2: "请上传身份证国徽面",
-        houseImg: "请上传房产证",
-        carImg: "请上传行驶证",
-        creditImg: "请上传征信"
+        IDCardImg2: "请上传身份证国徽面"
+        // houseImg: "请上传房产证",
+        // carImg: "请上传行驶证",
+        // creditImg: "请上传征信"
       };
+      var filterArr = [
+        "assessType",
+        "assessToll",
+        "houseImg",
+        "carImg",
+        "creditImg"
+      ];
       for (let key in form) {
+        if (filterArr.indexOf(key) > -1) continue;
         console.log(key);
         if (!form[key]) {
           uni.showToast({ title: errTips[key], icon: "none", duration: 2000 });

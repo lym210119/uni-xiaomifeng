@@ -318,6 +318,7 @@ export default {
     removeImage(i) {
       console.log("remove");
       this.imageList.splice(i, 1);
+      this.imgArr.splice(i, 1);
     },
     previewImage: function(e) {
       var current = e.target.dataset.src;

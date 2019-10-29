@@ -59,11 +59,11 @@
 
     <view class="item-upload item-scheme" v-if="!data.pastdue">
       <view class="item-label">
-        融资方案
+        {{data.refuseReason ? '无方案原因' : '融资方案'}}
       </view>
       <view class="item-image-list">
+        <view v-if="data.refuseReason">{{data.refuseReason}}</view>
         <view v-if="data.pairingState === 1">融资方案设计中</view>
-
         <view class="radio-group" v-else>
           <radio-group @change="radioChange">
             <label
@@ -88,7 +88,7 @@
     </view>
 
     <button
-      v-if="data.pastdue"
+      v-if="data.pastdue || data.refuseReason"
       type="button"
       class="reload-btn"
       @click="toBaobei()"
