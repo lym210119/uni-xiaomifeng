@@ -355,7 +355,7 @@ export default {
     // 删除图片
     removeImage(i) {
       console.log("remove");
-      this.uploadList[i].image.splice(i, 1);
+      this.uploadList[i].image.splice(0, 1);
     },
     previewImage: function(e) {
       var current = e.target.dataset.src;
