@@ -259,7 +259,8 @@ export default {
 
     chooseImage: async function() {
       uni.chooseImage({
-        count: 4,
+        count: 1,
+        sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
         success: res => {
           console.log(res);
           if (res.tempFilePaths.length > 4) {

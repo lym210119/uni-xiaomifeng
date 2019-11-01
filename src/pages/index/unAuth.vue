@@ -310,6 +310,7 @@ export default {
     async chooseImage(i) {
       uni.chooseImage({
         count: 1,
+        sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
         success: chooseImageRes => {
           console.log(chooseImageRes);
           const tempFilePaths = chooseImageRes.tempFilePaths;
