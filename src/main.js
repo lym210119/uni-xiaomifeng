@@ -9,12 +9,12 @@ Vue.config.productionTip = false
 
 App.mpType = 'app'
 // 打包后改
-Vue.prototype.imgBaseUrl = window.location.origin
-// if (process.env.NODE_ENV === 'production') {
-//   Vue.prototype.imgBaseUrl = 'http://39.100.129.13'
-// } else {
-//   Vue.prototype.imgBaseUrl = 'http://192.168.10.208:8099'
-// }
+
+if (process.env.NODE_ENV === 'production') {
+  Vue.prototype.imgBaseUrl = window.location.origin
+} else {
+  Vue.prototype.imgBaseUrl = 'http://192.168.10.208:8099'
+}
 Vue.prototype.$store = store
 
 Vue.use(MinRequest)

@@ -30,7 +30,7 @@
       <view class="search-nodata" v-if="searchNodata">
         <image class="nodata-img" src="../../static/apply-fail.png"></image>
         <view class="no-text">无该客户报单信息！</view>
-        <view class="ad-box">
+        <!-- <view class="ad-box">
           <view class="qrcode">
             <image class="qrcode-img" src="../../static/qrcode.png"></image>
             <view class="qrcode-text">扫码关注公众号</view>
@@ -40,7 +40,7 @@
             <view>武汉融宝科技有限公司提供服务支持</view>
             <view>商务合作：李经理 18672394979</view>
           </view>
-        </view>
+        </view> -->
       </view>
 
       <view class="search-list" v-else>
@@ -316,7 +316,7 @@ export default {
 .ad-box {
   position: relative;
   height: 470upx;
-  margin: 250upx 30upx 30upx 30upx;
+  margin: 50upx 30upx 30upx 30upx;
   border-top: 1px solid #e4b22f;
   border-bottom: 1px solid #e4b22f;
   font-size: 28upx;

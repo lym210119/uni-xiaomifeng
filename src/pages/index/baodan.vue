@@ -534,33 +534,97 @@ export default {
           // this.uploadList[i].image = this.uploadList[i].image.concat(
           //   tempFilePaths
           // );
-          uni.showLoading({ title: "上传图片中..." });
-          uni.uploadFile({
-            url: "/erp/api/uploadHousePic",
-            filePath: tempFilePaths[0],
-            name: "file",
-            formData: {
-              type: this.uploadList[i].name
-            },
-            success: uploadFileRes => {
-              console.log(uploadFileRes);
-              if (uploadFileRes.statusCode === 200) {
-                var data = JSON.parse(uploadFileRes.data);
-                console.log(data);
-                if (data.code !== "100") {
-                  uni.showToast({
-                    title: data.msg,
-                    icon: "none",
-                    duration: 2000
-                  });
-                  return;
+          this.getImageInfo(tempFilePaths[0]).then(res => {
+            console.log(res)
+            uni.showLoading({ title: "上传图片中..." });
+            uni.uploadFile({
+              url: "/erp/api/uploadHousePic",
+              filePath: res,
+              name: "file",
+              formData: {
+                type: this.uploadList[i].name
+              },
+              success: uploadFileRes => {
+                console.log(uploadFileRes);
+                if (uploadFileRes.statusCode === 200) {
+                  var data = JSON.parse(uploadFileRes.data);
+                  console.log(data);
+                  if (data.code !== "100") {
+                    uni.showToast({
+                      title: data.msg,
+                      icon: "none",
+                      duration: 2000
+                    });
+                    return;
+                  }
+                  uni.hideLoading();
+                  this.uploadList[i].image.push(this.imgBaseUrl + data.url);
                 }
-                uni.hideLoading();
-                this.uploadList[i].image.push(this.imgBaseUrl + data.url);
               }
-            }
-          });
+            });
+
+          })
         }
+      });
+    },
+        // 压缩图片
+    getImageInfo(src) {
+      return new Promise((resolve, reject) => {
+        uni.showLoading({
+          title: "压缩中...",
+          icon: "none"
+        });
+        uni.getImageInfo({
+          src: src,
+          success(res) {
+            console.log("压缩前", res);
+            // 缩放图片需要的canvas
+            var canvas = document.createElement("canvas");
+            var context = canvas.getContext("2d");
+            var img = new Image();
+            img.src = src;
+            // base64地址图片加载完毕后
+            img.onload = function() {
+              // 图片原始尺寸
+              var originWidth = res.width;
+              var originHeight = res.height;
+              // 最大尺寸限制
+              var maxWidth = 1080,
+                maxHeight = 1080;
+              // 目标尺寸
+              var targetWidth = originWidth,
+                targetHeight = originHeight;
+              // 图片尺寸超过400x400的限制
+              if (originWidth > maxWidth || originHeight > maxHeight) {
+                if (originWidth / originHeight > maxWidth / maxHeight) {
+                  // 更宽，按照宽度限定尺寸
+                  targetWidth = maxWidth;
+                  targetHeight = Math.round(
+                    maxWidth * (originHeight / originWidth)
+                  );
+                } else {
+                  targetHeight = maxHeight;
+                  targetWidth = Math.round(
+                    maxHeight * (originWidth / originHeight)
+                  );
+                }
+              }
+
+              // canvas对图片进行缩放
+              canvas.width = targetWidth;
+              canvas.height = targetHeight;
+              // 清除画布
+              context.clearRect(0, 0, targetWidth, targetHeight);
+              // 图片压缩
+              context.drawImage(img, 0, 0, targetWidth, targetHeight);
+              // canvas转为blob并上传
+              var dataUrl = canvas.toDataURL();
+              console.log("压缩后", dataUrl);
+              resolve(dataUrl);
+              uni.hideLoading();
+            };
+          }
+        });
       });
     },
     previewImage: function(e, i) {

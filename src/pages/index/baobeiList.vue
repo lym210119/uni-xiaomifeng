@@ -35,7 +35,7 @@
         <view class="no-button" @click="toBaobei()">报备客户，抢占先机</view>
       </view>
       <view class="search-list" v-else>
-        <view class="list-item" v-for="item in listData" :key="item.id">
+        <view class="list-item" v-for="item in listData" :key="item.id" @click="toDetail(item.id)">
           <view class="item-left">
             <view class="info">
               <text class="name">{{ item.cusName }}</text>
@@ -48,7 +48,7 @@
               }}</text></view
             >
           </view>
-          <view class="item-right" @click="toDetail(item.id)"
+          <view class="item-right"
             >{{planArr[item.pairingState]}}</view
           >
         </view>
