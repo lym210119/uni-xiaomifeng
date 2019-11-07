@@ -1,7 +1,7 @@
 <template>
   <view class="page">
     <view class="img-view">
-      <image class="login-logo" src="../../static/login-logo.png"></image>
+      <image class="login-logo" src="../../static/login-logo1.png"></image>
     </view>
     <view class="login-wrap">
       <view class="login-items">
@@ -264,6 +264,9 @@ export default {
   top: 178upx;
   left: 50%;
   transform: translateX(-50%);
+  border-radius: 50%;
+  border: 14upx solid rgba(255, 255, 255, 0.6);
+  box-sizing: border-box;
 }
 .login-wrap {
   margin: 56upx 30upx;

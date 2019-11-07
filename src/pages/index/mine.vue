@@ -2,7 +2,7 @@
   <view class="page">
     <view class="img-view">
       <view class="user-avatar">
-        <image class="" src="../../static/logo.png"></image>
+        <image class="" src="../../static/login-logo1.png"></image>
       </view>
       <view class="user-info">
         <view class="username">{{ data.name || "未认证" }}</view>

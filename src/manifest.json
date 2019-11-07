@@ -82,7 +82,7 @@
   "h5": {
     "router": {
       "mode": "hash",
-      "base": "/h5/"
+      "base": "/h6/"
     },
     "devServer": {
       // "port": 8000, //端口号
