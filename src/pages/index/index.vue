@@ -12,7 +12,7 @@
     <view class="bottom-text">
       <!-- <view>到底啦！更多产品敬请期待！</view> -->
       <view>{{ loadingText }}</view>
-      <view>商务合作：<text class="text-phoneNum">18672394979</text></view>
+      <view>商务合作：<text class="text-phoneNum">027-59323666</text></view>
     </view>
 
     <!-- <view class="fab-button" @click.stop="tobaobei()">

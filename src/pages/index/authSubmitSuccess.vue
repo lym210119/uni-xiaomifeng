@@ -6,13 +6,13 @@
     </view>
     <view class="ad-box">
       <view class="qrcode">
-        <image class="qrcode-img" src="../../static/qrcode.png"></image>
+        <image class="qrcode-img" src="../../static/qrcode_for_jinmaoshu.jpg"></image>
         <view class="qrcode-text">扫码关注公众号</view>
       </view>
       <view class="company">
         <view class="first-text">为用户提供一站式智能科技金融服务</view>
-        <view>武汉融宝科技有限公司提供服务支持</view>
-        <view>商务合作：李经理 18672394979</view>
+        <view>锦辰数科提供服务支持</view>
+        <view>商务合作：027-59323666</view>
       </view>
     </view>
     <fabButton></fabButton>
