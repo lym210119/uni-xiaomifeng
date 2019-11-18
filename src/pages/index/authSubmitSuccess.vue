@@ -11,8 +11,8 @@
       </view>
       <view class="company">
         <view class="first-text">为用户提供一站式智能科技金融服务</view>
-        <view>锦辰数科提供服务支持</view>
-        <view>商务合作：027-59323666</view>
+        <view>{{company.name}}提供服务支持</view>
+        <view>商务合作：{{company.tel}}</view>
       </view>
     </view>
     <fabButton></fabButton>
@@ -21,10 +21,12 @@
 
 <script>
 import fabButton from '../../components/fabButton'
+import {mapState} from 'vuex'
 export default {
   components: {
     fabButton
-  }
+  },
+  computed: ['company']
 };
 </script>
 

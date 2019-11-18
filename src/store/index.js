@@ -6,9 +6,18 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     userInfo: {},
-    hasLogin: false
+    hasLogin: false,
+    company: {}
   },
   mutations: {
+    setCom(state, provider) {
+      state.company.tel = provider.tel
+      state.company.name = provider.name
+      uni.setStorage({
+        key: 'company',
+        data: provider
+      })
+    },
     login(state, provider) {
       state.hasLogin = true
       state.userInfo.sessionId = provider.sessionId

@@ -26,6 +26,10 @@ minRequest.setConfig(config => {
 export default {
   // 这里统一管理api请求
   apis: {
+    // 获取公司名称和电话
+    getCompany(data) {
+      return minRequest.post('/erp/Api/getBusinessTel', data)
+    },
     // 提交报单
     submitDeclaration(data) {
       return minRequest.post('/erp/Api/submitDeclaration', data)

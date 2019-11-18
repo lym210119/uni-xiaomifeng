@@ -12,7 +12,9 @@
     <view class="bottom-text">
       <!-- <view>到底啦！更多产品敬请期待！</view> -->
       <view>{{ loadingText }}</view>
-      <view>商务合作：<text class="text-phoneNum">027-59323666</text></view>
+      <view
+        >商务合作：<text class="text-phoneNum">{{ company.tel }}</text></view
+      >
     </view>
 
     <!-- <view class="fab-button" @click.stop="tobaobei()">
@@ -32,6 +34,7 @@
 <script>
 import productItem from "../../components/productItem";
 import fabButton from "../../components/fabButton";
+import { mapMutations } from "vuex";
 export default {
   components: {
     productItem,
@@ -40,7 +43,8 @@ export default {
   data() {
     return {
       loadingText: "正在努力加载...",
-      loadingStatus: 0,
+      // loadingStatus: 0,
+      reload: false,
       // loadingStatus: 0,//定义加载方式 0---contentdown  1---contentrefresh 2---contentnomore
       // contentText: {
       //     contentdown:'上拉显示更多',
@@ -50,85 +54,74 @@ export default {
       productList: [],
       page: 1,
       timer: null,
-      isIndex: true
+      isIndex: true,
+      company: {}
     };
   },
   onLoad(opts) {
-    // _self = this
-
+    this.getCompany();
     this.getProductList();
-
-    // setTimeout(function () {
-    //     console.log('start pulldown');
-    // }, 1000);
-    // uni.startPullDownRefresh();
   },
   onPullDownRefresh() {
-    if (this.timer != null) {
-      clearTimeout(this.timer);
-    }
-    this.timer = setTimeout(() => {
-      this.getProductList();
-    }, 1000);
+    this.reload = true;
+    this.page = 1;
+    this.getProductList();
   },
   onReachBottom() {
     console.log("上啦加载。。");
-    // this.getMore()
-    if (this.timer != null) {
-      clearTimeout(this.timer);
-    }
-    this.timer = setTimeout(() => {
-      this.getMore();
-    }, 1000);
+    // this.status = "more";
+    this.page++;
+    this.loadingText = "正在努力加载中...";
+    this.getProductList();
   },
   methods: {
-    getMore() {
-      if (this.loadingStatus !== 0) {
-        //loadingStatus!=0;直接返回
-        return false;
-      }
-      this.loadingStatus = 1;
-      // uni.showNavigationBarLoading();//显示加载动画
-      this.$minApi.getProductList({ page: this.page }).then(res => {
-        console.log(JSON.stringify(res));
-        if (!res.res.length) {
-          //没有数据
-          this.loadingStatus = 2;
-          this.loadingText = "到底啦！更多产品敬请期待！";
-          return;
-        }
-        this.page++; //每触底一次 page +1
-        var data = res.res.map(element => {
-          element.iconFile =
-            this.imgBaseUrl + element.iconFile;
-          return element;
-        });
-        this.productList = this.productList.concat(data); //将数据拼接在一起
-        this.loadingStatus = 0; //将loadingStatus归0重置
-        // uni.hideNavigationBarLoading();//关闭加载动画
-      });
-    },
-    getProductList() {
-      this.page = 1;
-      this.loadingStatus = 0;
+    ...mapMutations(["setCom"]),
+    // getMore() {
+    //   if (this.loadingStatus !== 0) {
+    //     //loadingStatus!=0;直接返回
+    //     return false;
+    //   }
+    //   this.loadingStatus = 1;
+    //   // uni.showNavigationBarLoading();//显示加载动画
+    //   this.$minApi.getProductList({ page: this.page }).then(res => {
+    //     console.log(JSON.stringify(res));
+    //     if (!res.res.length) {
+    //       //没有数据
+    //       this.loadingStatus = 2;
+    //       this.loadingText = "到底啦！更多产品敬请期待！";
+    //       return;
+    //     }
+    //     this.page++; //每触底一次 page +1
+    //     var data = res.res.map(element => {
+    //       element.iconFile =
+    //         this.imgBaseUrl + element.iconFile;
+    //       return element;
+    //     });
+    //     this.productList = this.productList.concat(data); //将数据拼接在一起
+    //     this.loadingStatus = 0; //将loadingStatus归0重置
+    //     // uni.hideNavigationBarLoading();//关闭加载动画
+    //   });
+    // },
+    getProductList(type) {
+      // this.page = 1;
+      // this.loadingStatus = 0;
       this.$minApi
         .getProductList({ page: this.page })
         .then(res => {
           // this.res = res
           console.log(res);
-          if (res.code === "100" && res.res.length) {
-            var data = res.res.map(element => {
-              element.iconFile =
-                this.imgBaseUrl + element.iconFile;
-              return element;
-            });
-            this.productList = data;
-            console.log(this.productList);
-          } else {
-            this.loadingText = res.msg;
-          }
-          this.page++;
           uni.stopPullDownRefresh();
+          // if (res.code === "100") {
+          if (res.res.length < 12) {
+            this.loadingText = "到底啦！更多产品敬请期待！";
+          }
+          var data = res.res.map(element => {
+            element.iconFile = this.imgBaseUrl + element.iconFile;
+            return element;
+          });
+          this.productList = this.reload ? data : this.productList.concat(data);
+          console.log(this.productList);
+          this.reload = false;
         })
         .catch(err => {
           console.log(err);
@@ -140,11 +133,19 @@ export default {
         url: "detail?id=" + id
       });
     },
-    // toBaobei() {
-    //   uni.navigateTo({
-    //     url: "baobei"
-    //   });
-    // },
+    getCompany() {
+      this.$minApi
+        .getCompany()
+        .then(res => {
+          if (res.code === 1) {
+            this.setCom(res.data);
+            this.company = res.data
+          }
+        })
+        .catch(err => {
+          uni.showModal({ title: "网络错误", content: JSON.stringify(err) });
+        });
+    },
     toMine() {
       uni.navigateTo({
         url: "mine"
